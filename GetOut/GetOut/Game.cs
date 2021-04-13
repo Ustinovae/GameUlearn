@@ -10,6 +10,18 @@ namespace GetOut
     static class Game
     {
         public static Size mapSize;
-        public static ;
+        public static Models.IEntity[] Map;
+        public static int MapWidth => Map.GetLength(0);
+        public static int MapHeight => Map.GetLength(1);
+
+        public static void CreateMap(string strMap)
+        {
+
+        }
+
+        private static void Parshe()
+        {
+
+        }
     }
 }
