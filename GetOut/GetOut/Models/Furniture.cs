@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GetOut.Models
 {
-    class Furniture
+    class Furniture : IEntity
     {
         private Point location;
         private readonly int sizeStep; // надо будет сделать глобальную перемненну. чтобы можно было сылться из сущности на неё

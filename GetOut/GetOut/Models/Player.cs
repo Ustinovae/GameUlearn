@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GetOut.Models
 {
-    class Player
+    class Player : IEntity
     {
         private Point location;
         private readonly int sizeStep;
@@ -20,6 +20,14 @@ namespace GetOut.Models
             location.Y = y;
             this.sizeStep = sizeStep;
             holdFurniture = false;
+        }
+
+        public Point Location
+        {
+            get
+            {
+                return location;
+            }
         }
 
         public void TakeFurniture(Furniture furniture)
@@ -43,18 +51,10 @@ namespace GetOut.Models
             location = new Point(direction.X * sizeStep, direction.Y * sizeStep);
         }
 
-        public Point Location
-        {
-            get
-            {
-                return location;
-            }
-        }
-
         private bool InBounds(Point direction)
         {
-            return Location.X + direction.X * sizeStep >= 0 && Location.X + direction.X * sizeStep < Game.mapSize.Width &&
-                Location.Y + direction.Y * sizeStep >= 0 && Location.Y + direction.Y * sizeStep < Game.mapSize.Height;
+            return location.X + direction.X * sizeStep >= 0 && location.X + direction.X * sizeStep < Game.mapSize.Width &&
+                location.Y + direction.Y * sizeStep >= 0 && location.Y + direction.Y * sizeStep < Game.mapSize.Height;
         }
     }
 }

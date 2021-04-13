@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GetOut.Models
 {
-    class Barrier
+    class Barrier : IEntity
     {
         private Point location;
 

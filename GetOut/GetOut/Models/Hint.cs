@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 
 namespace GetOut.Models
 {
-    class Hint
+    class Hint : IEntity
     {
         private Point location;
+        private readonly string text;
 
-        public Hint(int x, int y)
+        public Hint(int x, int y, string text)
         {
             location.X = x;
             location.Y = y;
+            this.text = text;
         }
 
 
@@ -23,6 +25,14 @@ namespace GetOut.Models
             get
             {
                 return location;
+            }
+        }
+
+        public string Text
+        {
+            get 
+            { 
+                return text;
             }
         }
     }

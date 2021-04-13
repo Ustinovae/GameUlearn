@@ -64,6 +64,7 @@
     <Compile Include="Models\Enemy.cs" />
     <Compile Include="Models\Furniture.cs" />
     <Compile Include="Models\Hint.cs" />
+    <Compile Include="Models\IEntity.cs" />
     <Compile Include="Models\ModelsTests\EnemyTests.cs" />
     <Compile Include="Models\ModelsTests\FurnitureTests.cs" />
     <Compile Include="Models\ModelsTests\HintTests.cs" />
