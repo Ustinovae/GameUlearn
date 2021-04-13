@@ -64,6 +64,9 @@
     <Compile Include="Models\Enemy.cs" />
     <Compile Include="Models\Furniture.cs" />
     <Compile Include="Models\Hint.cs" />
+    <Compile Include="Models\ModelsTests\EnemyTests.cs" />
+    <Compile Include="Models\ModelsTests\FurnitureTests.cs" />
+    <Compile Include="Models\ModelsTests\PlayerTests.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -90,9 +93,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\ModelsTests\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
