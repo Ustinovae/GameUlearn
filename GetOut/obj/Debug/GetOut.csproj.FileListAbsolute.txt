@@ -1,9 +1,0 @@
-D:\C#\GetOut\GetOut\bin\Debug\GetOut.exe.config
-D:\C#\GetOut\GetOut\bin\Debug\GetOut.exe
-D:\C#\GetOut\GetOut\bin\Debug\GetOut.pdb
-D:\C#\GetOut\GetOut\obj\Debug\GetOut.csprojAssemblyReference.cache
-D:\C#\GetOut\GetOut\obj\Debug\GetOut.Properties.Resources.resources
-D:\C#\GetOut\GetOut\obj\Debug\GetOut.csproj.GenerateResource.cache
-D:\C#\GetOut\GetOut\obj\Debug\GetOut.csproj.CoreCompileInputs.cache
-D:\C#\GetOut\GetOut\obj\Debug\GetOut.exe
-D:\C#\GetOut\GetOut\obj\Debug\GetOut.pdb
