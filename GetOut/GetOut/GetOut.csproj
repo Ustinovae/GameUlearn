@@ -66,6 +66,7 @@
     <Compile Include="Models\Hint.cs" />
     <Compile Include="Models\ModelsTests\EnemyTests.cs" />
     <Compile Include="Models\ModelsTests\FurnitureTests.cs" />
+    <Compile Include="Models\ModelsTests\HintTests.cs" />
     <Compile Include="Models\ModelsTests\PlayerTests.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Program.cs" />
