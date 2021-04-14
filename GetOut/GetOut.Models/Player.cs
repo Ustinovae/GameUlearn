@@ -5,27 +5,16 @@ using System.Linq;
 
 namespace GetOut.Models
 {
-    public class Player
+    public class Player : Entity
     {
-        private Point location;
         private readonly int sizeStep;
         private bool holdFurniture;
         private Furniture takenFurniture;
 
-        public Player(int x, int y, int sizeStep)
+        public Player(int x, int y, int sizeStep) : base(x, y)
         {
-            location.X = x;
-            location.Y = y;
             this.sizeStep = sizeStep;
             holdFurniture = false;
-        }
-
-        public Point Location
-        {
-            get
-            {
-                return location;
-            }
         }
 
         public void TakeFurniture(Furniture furniture)
@@ -46,13 +35,13 @@ namespace GetOut.Models
                 return;
             if (holdFurniture)
                 takenFurniture.MoveTo(direction);
-            location = new Point(direction.X * sizeStep, direction.Y * sizeStep);
+            Location = new Point(direction.X * sizeStep, direction.Y * sizeStep);
         }
 
         private bool InBounds(Point direction)
         {
-            return location.X + direction.X * sizeStep >= 0 && location.X + direction.X * sizeStep < Game.mapSize.Width &&
-                location.Y + direction.Y * sizeStep >= 0 && location.Y + direction.Y * sizeStep < Game.mapSize.Height;
+            return Location.X + direction.X * sizeStep >= 0 && Location.X + direction.X * sizeStep < Game.mapSize.Width &&
+                Location.Y + direction.Y * sizeStep >= 0 && Location.Y + direction.Y * sizeStep < Game.mapSize.Height;
         }
     }
 }

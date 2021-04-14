@@ -3,37 +3,26 @@ using System.Drawing;
 
 namespace GetOut.Models
 {
-    public class Enemy
+    public class Enemy : Entity
     {
-        private Point location;
         private readonly int sizeStep;
 
-        public Enemy(int x, int y, int sizeStep)
+        public Enemy(int x, int y, int sizeStep) : base(x, y)
         {
-            location.X = x;
-            location.Y = y;
             this.sizeStep = sizeStep;
-        }
-
-        public Point Location
-        {
-            get
-            {
-                return location;
-            }
         }
 
         public void Move(Point direction)
         {
             if (!InBounds(direction))
                 return;
-            location = new Point(direction.X * sizeStep, direction.Y * sizeStep);
+            Location = new Point(direction.X * sizeStep, direction.Y * sizeStep);
         }
 
         private bool InBounds(Point direction)
         {
-            return location.X + direction.X * sizeStep >= 0 && location.X + direction.X * sizeStep < Game.mapSize.Width &&
-                location.Y + direction.Y * sizeStep >= 0 && location.Y + direction.Y * sizeStep < Game.mapSize.Height;
+            return Location.X + direction.X * sizeStep >= 0 && Location.X + direction.X * sizeStep < Game.mapSize.Width &&
+                Location.Y + direction.Y * sizeStep >= 0 && Location.Y + direction.Y * sizeStep < Game.mapSize.Height;
         }
     }
 }

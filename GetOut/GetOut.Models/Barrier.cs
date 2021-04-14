@@ -5,22 +5,11 @@ using System.Linq;
 
 namespace GetOut.Models
 {
-    public class Barrier
+    public class Barrier : Entity
     {
-        private Point location;
-
-        public Barrier(int x, int y)
+        public Barrier(int x, int y) : base(x, y)
         {
-            location.X = x;
-            location.Y = y;
-        }
-
-        public Point Location
-        {
-            get
-            {
-                return location;
-            }
+            // возможно буду сразу присаивать изображения
         }
     }
 }

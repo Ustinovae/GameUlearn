@@ -5,25 +5,13 @@ using System.Linq;
 
 namespace GetOut.Models
 {
-    public class Hint
+    public class Hint : Entity
     {
-        private Point location;
         private readonly string text;
 
-        public Hint(int x, int y, string text)
+        public Hint(int x, int y, string text) : base(x, y)
         {
-            location.X = x;
-            location.Y = y;
             this.text = text;
-        }
-
-
-        public Point Location
-        {
-            get
-            {
-                return location;
-            }
         }
 
         public string Text

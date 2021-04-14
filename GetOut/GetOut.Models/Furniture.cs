@@ -5,30 +5,18 @@ using System.Linq;
 
 namespace GetOut.Models
 {
-    public class Furniture
+    public class Furniture : Entity
     {
-        private Point location;
         private readonly int sizeStep; // надо будет сделать глобальную перемненну. чтобы можно было сылться из сущности на неё
 
-        public Furniture(int x, int y, int sizeStep)
+        public Furniture(int x, int y, int sizeStep) : base(x, y)
         {
-            location.X = x;
-            location.Y = y;
             this.sizeStep = sizeStep;
         }
 
-
         public void MoveTo(Point direction)
         {
-            location = new Point(direction.X * sizeStep, direction.Y * sizeStep);
-        }
-
-        public Point Location
-        {
-            get
-            {
-                return location;
-            }
+            Location = new Point(direction.X * sizeStep, direction.Y * sizeStep);
         }
     }
 }
