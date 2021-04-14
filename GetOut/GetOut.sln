@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetOut", "GetOut\GetOut.csproj", "{8DF2F645-33B9-4E1A-960A-7290AFD20122}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetOut.Forms", "GetOut\GetOut.Forms.csproj", "{8DF2F645-33B9-4E1A-960A-7290AFD20122}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetOut.Models", "GetOut.Models\GetOut.Models.csproj", "{A1657BCE-051F-4051-BB61-B56B69029B59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GetOut.Models", "GetOut.Models\GetOut.Models.csproj", "{A1657BCE-051F-4051-BB61-B56B69029B59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetOut.Models.Tests", "GetOut.Models.Tests\GetOut.Models.Tests.csproj", "{86AFA5F9-B5E5-468C-BC5D-E26ED2032997}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GetOut.Models.Tests", "GetOut.Models.Tests\GetOut.Models.Tests.csproj", "{86AFA5F9-B5E5-468C-BC5D-E26ED2032997}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
