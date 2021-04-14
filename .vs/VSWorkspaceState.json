@@ -1,10 +1,7 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\GetOut",
-    "\\GetOut\\GetOut",
-    "\\GetOut\\GetOut\\Models"
+    ""
   ],
-  "SelectedNode": "\\GetOut\\GetOut",
+  "SelectedNode": "\\.gitignore",
   "PreviewInSolutionExplorer": false
 }
