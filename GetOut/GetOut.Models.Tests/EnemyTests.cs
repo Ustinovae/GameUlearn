@@ -5,6 +5,7 @@ using NUnit.Framework;
 
 namespace GetOut.Models.Tests
 {
+    [TestFixture]
     class EnemyTests
     {
     }
