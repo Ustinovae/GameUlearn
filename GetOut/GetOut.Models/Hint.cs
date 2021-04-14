@@ -2,25 +2,35 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace GetOut.Models
 {
-    class Barrier : IEntity
+    public class Hint
     {
         private Point location;
+        private readonly string text;
 
-        public Barrier(int x, int y)
+        public Hint(int x, int y, string text)
         {
             location.X = x;
             location.Y = y;
+            this.text = text;
         }
+
 
         public Point Location
         {
             get
             {
                 return location;
+            }
+        }
+
+        public string Text
+        {
+            get
+            {
+                return text;
             }
         }
     }

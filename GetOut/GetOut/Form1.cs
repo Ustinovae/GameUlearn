@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace GetOut
 {
-    public partial class GetOut : Form
+    public partial class Form1 : Form
     {
-        public GetOut()
+        public Form1()
         {
             InitializeComponent();
         }

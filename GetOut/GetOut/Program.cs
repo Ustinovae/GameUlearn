@@ -16,7 +16,7 @@ namespace GetOut
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GetOut());
+            Application.Run(new Form1());
         }
     }
 }

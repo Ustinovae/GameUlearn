@@ -1,7 +1,7 @@
 ﻿
 namespace GetOut
 {
-    partial class GetOut
+    partial class Form1
     {
         /// <summary>
         /// Required designer variable.
