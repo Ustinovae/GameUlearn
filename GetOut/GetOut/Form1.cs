@@ -15,6 +15,17 @@ namespace GetOut
         public Form1()
         {
             InitializeComponent();
+            Added();
+        }
+
+
+
+        public void Added()
+        {
+            var t = new PictureBox();
+            t.Image = Resource1.Безымянный;
+            t.Location = new Point(0, 0);
+            Controls.Add(t);
         }
     }
 }
