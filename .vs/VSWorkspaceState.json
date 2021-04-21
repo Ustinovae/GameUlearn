@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\GetOut"
   ],
-  "SelectedNode": "\\GetOut.sln",
+  "SelectedNode": "\\GetOut\\GetOut.sln",
   "PreviewInSolutionExplorer": false
 }
