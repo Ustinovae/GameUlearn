@@ -5,5 +5,6 @@ namespace GetOut.Models.Tests
 {
     public class PlayerTests
     {
+        
     }
 }

@@ -7,25 +7,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using GetOut.Models;
 
-namespace GetOut
+namespace GetOutWinForm
 {
-    public partial class Form1 : Form
+    public partial class GetOutWinForm : Form
     {
-        public Form1()
+        public GetOutWinForm()
         {
             InitializeComponent();
-            Added();
+            
+
         }
 
-
-
-        public void Added()
+        private void UpD()
         {
-            var t = new PictureBox();
-            t.Image = Resource1.Безымянный;
-            t.Location = new Point(0, 0);
-            Controls.Add(t);
+
         }
+
     }
 }
