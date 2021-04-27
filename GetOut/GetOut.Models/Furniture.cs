@@ -7,16 +7,15 @@ namespace GetOut.Models
 {
     public class Furniture : Entity
     {
-        private readonly int sizeStep; // надо будет сделать глобальную перемненну. чтобы можно было сылться из сущности на неё
-
-        public Furniture(int x, int y, int sizeStep) : base(x, y)
+        public Furniture(int posX, int posY, Image sprite):base(posX, posY, sprite) 
         {
-            this.sizeStep = sizeStep;
+
         }
 
-        public void MoveTo(Point direction)
+        public void Move()
         {
-            Location = new Point(direction.X * sizeStep, direction.Y * sizeStep);
+            posX += dirX;
+            posY += dirY;
         }
     }
 }

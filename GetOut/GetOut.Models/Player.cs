@@ -7,41 +7,53 @@ namespace GetOut.Models
 {
     public class Player : Entity
     {
-        private readonly int sizeStep;
-        private bool holdFurniture;
-        private Furniture takenFurniture;
-
-        public Player(int x, int y, int sizeStep) : base(x, y)
+        public Player(int posX, int posY, int idleFrames, int runFrames, int attackFrames, int deathFrames, Image spriteSheet) 
+            : base(posX, posY, idleFrames, runFrames, attackFrames, deathFrames, spriteSheet)
         {
-            this.sizeStep = sizeStep;
-            holdFurniture = false;
+
         }
 
-        public void TakeFurniture(Furniture furniture)
+        public void Move()
         {
-            holdFurniture = true;
-            takenFurniture = furniture;
+            posX += dirX;
+            posY += dirY;
         }
 
-        public void LetGo()
+        public void PlayAnimation(Graphics g)
         {
-            holdFurniture = false;
-            takenFurniture = null;
+            g.DrawImage(spriteSheet,
+                new Rectangle(new Point(posX - flip * size.Width / 2, posY),
+                new Size(flip * size.Width, size.Height)),
+                size.Width * currentFrame + 26 * (currentFrame + 1),
+                size.Height * currentAnimation + 26 * (currentAnimation + 1),
+                size.Width,
+                size.Height,
+                GraphicsUnit.Pixel);
+
+            if (currentFrame < currentLimit - 1)
+                currentFrame += 1;
+            else currentFrame = 0;
         }
 
-        public void MoveTo(Point direction)
+        public void SetAnimationConfiguration(int currentAnimation)
         {
-            if (!InBounds(direction))
-                return;
-            if (holdFurniture)
-                takenFurniture.MoveTo(direction);
-            Location = new Point(direction.X * sizeStep, direction.Y * sizeStep);
-        }
+            this.currentAnimation = currentAnimation;
 
-        private bool InBounds(Point direction)
-        {
-            return Location.X + direction.X * sizeStep >= 0 && Location.X + direction.X * sizeStep < Game.mapSize.Width &&
-                Location.Y + direction.Y * sizeStep >= 0 && Location.Y + direction.Y * sizeStep < Game.mapSize.Height;
+            switch (currentAnimation)
+            {
+                case 0:
+                    currentAnimation = idleFrames;
+                    break;
+                case 1:
+                    currentAnimation = runFrames;
+                    break;
+                case 2:
+                    currentAnimation = attackFrames;
+                    break;
+                case 3:
+                    currentAnimation = deathFrames;
+                    break;
+            }
         }
     }
 }

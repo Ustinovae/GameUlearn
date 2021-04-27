@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GetOut.Models", "GetOut.Mod
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GetOut.Models.Tests", "GetOut.Models.Tests\GetOut.Models.Tests.csproj", "{86AFA5F9-B5E5-468C-BC5D-E26ED2032997}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GetOut.WinForm", "WinFormsApp1\GetOut.WinForm.csproj", "{82483C8D-0DEB-4A40-91F9-0FFC04EAE32C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GetOut.WinForm", "GetOut.WinForm\GetOut.WinForm.csproj", "{D4C8E0F0-6E7A-4D25-8A0B-3E4D4B3C1C1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{86AFA5F9-B5E5-468C-BC5D-E26ED2032997}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86AFA5F9-B5E5-468C-BC5D-E26ED2032997}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86AFA5F9-B5E5-468C-BC5D-E26ED2032997}.Release|Any CPU.Build.0 = Release|Any CPU
-		{82483C8D-0DEB-4A40-91F9-0FFC04EAE32C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{82483C8D-0DEB-4A40-91F9-0FFC04EAE32C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{82483C8D-0DEB-4A40-91F9-0FFC04EAE32C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{82483C8D-0DEB-4A40-91F9-0FFC04EAE32C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4C8E0F0-6E7A-4D25-8A0B-3E4D4B3C1C1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4C8E0F0-6E7A-4D25-8A0B-3E4D4B3C1C1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4C8E0F0-6E7A-4D25-8A0B-3E4D4B3C1C1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4C8E0F0-6E7A-4D25-8A0B-3E4D4B3C1C1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,9 +7,9 @@ namespace GetOut.Models
 {
     public class Barrier : Entity
     {
-        public Barrier(int x, int y) : base(x, y)
+        public Barrier(int posX, int posY, Image sprite) : base(posX, posY, sprite)
         {
-            // возможно буду сразу присаивать изображения
+
         }
     }
 }

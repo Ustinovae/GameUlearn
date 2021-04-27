@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace GetOut.Models
 {
-    public class Hint : Entity
+    public class Hint: Entity
     {
         private readonly string text;
 
-        public Hint(int x, int y, string text) : base(x, y)
+        public Hint(int posX, int posY, Image sprite, string text) : base(posX, posY, sprite)
         {
             this.text = text;
         }
