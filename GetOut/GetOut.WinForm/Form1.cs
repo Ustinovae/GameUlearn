@@ -16,29 +16,34 @@ namespace GetOutWinForm
     {
         public Image playerSheet;
         public Player player;
-        public Timer timer1 = new();
+        public Timer updateTimer = new();
+        
 
         public GetOutWinForm()
         {
-
             InitializeComponent();
             DoubleBuffered = true;
-            timer1.Interval = 40;
-            timer1.Tick += new EventHandler(Update);
+            updateTimer.Interval = 50;
+            updateTimer.Tick += new EventHandler(Update);
 
             KeyDown += new KeyEventHandler(OnPress);
             KeyUp += new KeyEventHandler(OnKeyUp);
 
             Init();
-
         }
 
         private void Init()
         {
-            playerSheet = new Bitmap("D:\\C#\\GetOut\\GetOut\\GetOut.WinForm\\EntitySprites\\Player.png");
+            Game.Intit();
+            this.Width = Game.cellSize * Game.mapWidth;
+            this.Height = Game.cellSize * Game.mapHeight;
+            var directorySprites = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.Parent.Parent;
+            var pathToPlayer = new Bitmap(Path.Combine(directorySprites.ToString(), "EntitySprites\\Player.png"));
+            playerSheet = pathToPlayer;
+            player = new Player(100, 100, 2, 6, 3, 3, playerSheet, 25, 55);
+            updateTimer.Start();
+            this.BackgroundImage = new Bitmap(Path.Combine(new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.Parent.Parent.ToString(), "EntitySprites\\WoodenFloor.png"));
 
-            player = new Player(100, 100, 2, 6, 3, 3, playerSheet);
-            timer1.Start();
         }
 
         private void OnKeyUp(object sender, KeyEventArgs e)
@@ -87,8 +92,9 @@ namespace GetOutWinForm
 
         private void OnPaint(object sender, PaintEventArgs e)
         {
-            Graphics g = e.Graphics;
 
+            Graphics g = e.Graphics;
+            Game.DrawMap(g);
             player.PlayAnimation(g);
         }
 
@@ -98,6 +104,5 @@ namespace GetOutWinForm
                 player.Move();
             Invalidate();
         }
-
     }
 }

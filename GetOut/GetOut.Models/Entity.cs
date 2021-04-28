@@ -28,7 +28,7 @@ namespace GetOut.Models
 
         public Image spriteSheet;
 
-        public Entity(int posX, int posY, int idleFrames, int runFrames, int attackFrames, int deathFrames, Image spriteSheet)
+        public Entity(int posX, int posY, int idleFrames, int runFrames, int attackFrames, int deathFrames, Image spriteSheet, int Width, int height)
         {
             this.posX = posX;
             this.posY = posY;
@@ -37,7 +37,8 @@ namespace GetOut.Models
             this.attackFrames = attackFrames;
             this.deathFrames = deathFrames;
             this.spriteSheet = spriteSheet;
-            size = new Size(51, 100);
+            size = new Size(Width, height);
+          
             currentAnimation = 0;
             currentFrame = 0;
             currentLimit = idleFrames;

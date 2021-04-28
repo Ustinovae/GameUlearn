@@ -7,8 +7,8 @@ namespace GetOut.Models
 {
     public class Player : Entity
     {
-        public Player(int posX, int posY, int idleFrames, int runFrames, int attackFrames, int deathFrames, Image spriteSheet) 
-            : base(posX, posY, idleFrames, runFrames, attackFrames, deathFrames, spriteSheet)
+        public Player(int posX, int posY, int idleFrames, int runFrames, int attackFrames, int deathFrames, Image spriteSheet, int width, int height) 
+            : base(posX, posY, idleFrames, runFrames, attackFrames, deathFrames, spriteSheet,  width, height)
         {
 
         }
@@ -24,8 +24,8 @@ namespace GetOut.Models
             g.DrawImage(spriteSheet,
                 new Rectangle(new Point(posX - flip * size.Width / 2, posY),
                 new Size(flip * size.Width, size.Height)),
-                size.Width * currentFrame + 26 * (currentFrame + 1),
-                size.Height * currentAnimation + 26 * (currentAnimation + 1),
+                size.Width * currentFrame + 20 * (currentFrame + 1),
+                size.Height * currentAnimation + 20 * (currentAnimation + 1),
                 size.Width,
                 size.Height,
                 GraphicsUnit.Pixel);
