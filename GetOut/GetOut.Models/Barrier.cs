@@ -7,11 +7,10 @@ namespace GetOut.Models
 {
     public class Barrier : Entity
     {
-        public Barrier(int posX, int posY, Image sprite) : base(posX, posY, sprite)
+        public Size Size;
+        public Barrier(int posX, int posY, Image sprite, Size size) : base(posX, posY, sprite)
         {
-
+            this.Size = size;
         }
-
-
     }
 }

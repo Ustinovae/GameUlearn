@@ -7,25 +7,38 @@ namespace GetOut.Models
 {
     public class Player : Entity
     {
+        private readonly int speedValue = 5;
+
         public Player(int posX, int posY, int idleFrames, int runFrames, int attackFrames, int deathFrames, Image spriteSheet, int width, int height) 
             : base(posX, posY, idleFrames, runFrames, attackFrames, deathFrames, spriteSheet,  width, height)
         {
-
         }
 
-        public void Move()
+        public void StartMove(int dirX, int dirY)
         {
-            posX += dirX;
-            posY += dirY;
+            this.dirX = dirX;
+            this.dirY = dirY;
+        }
+
+        public void StopMove()
+        {
+            dirX = 0;
+            dirY = 0;
+        }
+
+        public void Act()
+        {
+            posX += dirX * speedValue;
+            posY += dirY * speedValue;
         }
 
         public void PlayAnimation(Graphics g)
         {
             g.DrawImage(spriteSheet,
-                new Rectangle(new Point(posX - flip * size.Width / 2, posY),
-                new Size(flip * size.Width, size.Height)),
-                size.Width * currentFrame + 20 * (currentFrame + 1),
-                size.Height * currentAnimation + 20 * (currentAnimation + 1),
+                new Rectangle(new Point(posX, posY),
+                new Size(size.Width, size.Height)),
+                size.Width * currentFrame,
+                size.Height * currentAnimation,
                 size.Width,
                 size.Height,
                 GraphicsUnit.Pixel);
@@ -48,10 +61,10 @@ namespace GetOut.Models
                     currentAnimation = runFrames;
                     break;
                 case 2:
-                    currentAnimation = attackFrames;
+                    currentAnimation = runFrames;
                     break;
                 case 3:
-                    currentAnimation = deathFrames;
+                    currentAnimation = idleFrames;
                     break;
             }
         }

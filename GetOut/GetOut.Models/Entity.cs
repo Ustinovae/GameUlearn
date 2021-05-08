@@ -38,7 +38,7 @@ namespace GetOut.Models
             this.deathFrames = deathFrames;
             this.spriteSheet = spriteSheet;
             size = new Size(Width, height);
-          
+
             currentAnimation = 0;
             currentFrame = 0;
             currentLimit = idleFrames;

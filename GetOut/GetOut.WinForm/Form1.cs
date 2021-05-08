@@ -35,23 +35,23 @@ namespace GetOutWinForm
         private void Init()
         {
             Game.Intit();
-            this.Width = Game.cellSize * Game.mapWidth;
-            this.Height = Game.cellSize * Game.mapHeight;
+            this.Width = Game.cellSize * Game.mapWidth + 20;
+            this.Height = Game.cellSize * Game.mapHeight + 30;
             var directorySprites = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.Parent.Parent;
             var pathToPlayer = new Bitmap(Path.Combine(directorySprites.ToString(), "EntitySprites\\Player.png"));
             playerSheet = pathToPlayer;
-            player = new Player(100, 100, 2, 6, 3, 3, playerSheet, 25, 55);
+            player = new Player(480, 480, 2, 6, 3, 3, playerSheet, 30, 60);
             updateTimer.Start();
             this.BackgroundImage = new Bitmap(Path.Combine(new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.Parent.Parent.ToString(), "EntitySprites\\WoodenFloor.png"));
-
         }
 
         private void OnKeyUp(object sender, KeyEventArgs e)
         {
-            player.dirX = 0;
-            player.dirY = 0;
-            player.isMoving = false;
-            player.SetAnimationConfiguration(0);
+            if (player.flip == -1)
+                player.SetAnimationConfiguration(3);
+            else
+                player.SetAnimationConfiguration(0);
+            player.StopMove();
         }
 
         private void OnPress(object sender, KeyEventArgs e)
@@ -59,33 +59,28 @@ namespace GetOutWinForm
             switch (e.KeyCode)
             {
                 case Keys.W:
-                    player.dirY = -5;
-
+                    player.StartMove(0, -1);
+                    if (player.flip == -1)
+                        player.SetAnimationConfiguration(2);
+                    else
                     player.SetAnimationConfiguration(1);
-                    player.isMoving = true;
                     break;
                 case Keys.S:
-                    player.dirY = 5;
-                    player.SetAnimationConfiguration(1);
-                    player.isMoving = true;
+                    player.StartMove(0, 1);
+                    if (player.flip == -1)
+                        player.SetAnimationConfiguration(2);
+                    else
+                        player.SetAnimationConfiguration(1);
                     break;
                 case Keys.A:
-                    player.dirX = -5;
+                    player.StartMove(-1, 0);
                     player.flip = -1;
-                    player.SetAnimationConfiguration(1);
-                    player.isMoving = true;
+                    player.SetAnimationConfiguration(2);
                     break;
                 case Keys.D:
-                    player.dirX = 5;
+                    player.StartMove(1, 0);
                     player.flip = 1;
                     player.SetAnimationConfiguration(1);
-                    player.isMoving = true;
-                    break;
-                case Keys.Space:
-                    player.dirX = 0;
-                    player.dirY = 0;
-                    player.isMoving = false;
-                    player.SetAnimationConfiguration(2);
                     break;
             }
         }
@@ -100,8 +95,8 @@ namespace GetOutWinForm
 
         private void Update(object sender, EventArgs e)
         {
-            if (player.isMoving)
-                player.Move();
+            if (!Physics.IsCollide(player, player.dirX, player.dirY))
+                player.Act();
             Invalidate();
         }
     }

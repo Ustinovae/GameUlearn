@@ -13,54 +13,51 @@ namespace GetOut.Models
         public static int cellSize = 30;
         public static int[,] map = new int[mapHeight, mapWidth];
         public static Image spriteSheet;
-        public static List<Entity> entitiesOnMap = new();
+        public static List<Barrier> entitiesOnMap;
 
         public static void Intit()
         {
             map = GetMap();
-            spriteSheet = new Bitmap(Path.Combine(new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.Parent.Parent.ToString(), "EntitySprites\\WoodenFloor.png"));
+            spriteSheet = new Bitmap(Path.Combine(new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.Parent.Parent.ToString(), "EntitySprites\\barier.png"));
+            entitiesOnMap = new List<Barrier>();
         }
 
         private static int[,] GetMap()
         {
             return new int[,]{
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0 },
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0 },
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0 },
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0 },
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0 },
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0 },
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0 },
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0 },
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0 },
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0 },
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0 },
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0 },
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0 },
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0 },
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0 },
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0 },
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0 },
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0 },
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0 },
-                { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 0 }
+                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, 1 },
+                { 1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0, 1 },
+                { 1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0, 1 },
+                { 1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0, 1 },
+                { 1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0, 1 },
+                { 1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0, 1 },
+                { 1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0, 1 },
+                { 1,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0, 1 },
+                { 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 1 },
+                { 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 1 },
+                { 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 1 },
+                { 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 1 },
+                { 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 1 },
+                { 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 1 },
+                { 1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0, 1 },
+                { 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 1 },
+                { 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 1 },
+                { 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 1 },
+                { 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 1 },
+                { 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, 1 }
             };
         }
 
         public static void DrawMap(Graphics g)
         {
-            for (var i = 0; i < mapWidth; i++)
+            for (var i = 0; i < mapHeight; i++)
             {
-                for (var j = 0; j < mapHeight; j++)
+                for (var j = 0; j < mapWidth; j++)
                 {
                     if (map[i, j] == 1)
                     {
-                        //g.DrawImage(spriteSheet,
-                        //    new Rectangle(new Point(i * cellSize, j * cellSize),
-                        //    new Size(cellSize, cellSize)),
-                        //    0, 0,
-                        //    70, 70,
-                        //    GraphicsUnit.Pixel);
+                        g.DrawImage(spriteSheet, new Point(j*cellSize, i*cellSize));
+                        entitiesOnMap.Add(new Barrier(j * cellSize, i * cellSize, null, new Size(cellSize, cellSize)));
                     }
                 }
             }

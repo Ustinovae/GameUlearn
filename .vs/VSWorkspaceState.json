@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\GetOut",
+    "\\GetOut\\GetOut.Models"
   ],
-  "SelectedNode": "\\Progress.md",
+  "SelectedNode": "\\GetOut\\GetOut.sln",
   "PreviewInSolutionExplorer": false
 }
