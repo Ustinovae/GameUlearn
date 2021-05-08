@@ -7,44 +7,65 @@ namespace GetOut.Models
 {
     public class Player : Entity
     {
-        private readonly int speedValue = 5;
+        private readonly int idleFrames;
+        private readonly int runFrames;
+        private readonly int attackFrames;
+        private readonly int deathFrames;
+
+        private readonly Image spriteSheet;
+
+        private int currentAnimation;
+        private int currentFrame;
+        private int currentLimit;
 
         public Player(int posX, int posY, int idleFrames, int runFrames, int attackFrames, int deathFrames, Image spriteSheet, int width, int height) 
-            : base(posX, posY, idleFrames, runFrames, attackFrames, deathFrames, spriteSheet,  width, height)
+            : base(posX, posY, new Size(width, height))
         {
+            this.idleFrames = idleFrames;
+            this.runFrames = runFrames;
+            this.attackFrames = attackFrames;
+            this.deathFrames = deathFrames;
+            this.spriteSheet = spriteSheet;
+            SpeedValue = 5;
+            currentLimit = idleFrames;
         }
+
+        public bool Flip;
+        public int SpeedValue { get; }
+
+        public int DirX { get; private set; }
+        public int DirY { get; private set; }
 
         public void StartMove(int dirX, int dirY)
         {
-            this.dirX = dirX;
-            this.dirY = dirY;
+            DirX = dirX;
+            DirY = dirY;
         }
 
         public void StopMove()
         {
-            dirX = 0;
-            dirY = 0;
+            DirX = 0;
+            DirY = 0;
         }
 
         public void Act()
         {
-            posX += dirX * speedValue;
-            posY += dirY * speedValue;
+            PosX += DirX * SpeedValue;
+            PosY += DirY * SpeedValue;
         }
 
         public void PlayAnimation(Graphics g)
         {
             g.DrawImage(spriteSheet,
-                new Rectangle(new Point(posX, posY),
-                new Size(size.Width, size.Height)),
-                size.Width * currentFrame,
-                size.Height * currentAnimation,
-                size.Width,
-                size.Height,
+                new Rectangle(new Point(base.PosX, PosY),
+                new Size(Size.Width, Size.Height)),
+                Size.Width * currentFrame,
+                Size.Height * currentAnimation,
+                Size.Width,
+                Size.Height,
                 GraphicsUnit.Pixel);
 
-            if (currentFrame < currentLimit - 1)
-                currentFrame += 1;
+            if (currentFrame < currentLimit - 1) currentFrame += 1;
             else currentFrame = 0;
         }
 
@@ -55,16 +76,16 @@ namespace GetOut.Models
             switch (currentAnimation)
             {
                 case 0:
-                    currentAnimation = idleFrames;
+                    currentLimit = idleFrames;
                     break;
                 case 1:
-                    currentAnimation = runFrames;
+                    currentLimit = runFrames;
                     break;
                 case 2:
-                    currentAnimation = runFrames;
+                    currentLimit = runFrames;
                     break;
                 case 3:
-                    currentAnimation = idleFrames;
+                    currentLimit = idleFrames;
                     break;
             }
         }

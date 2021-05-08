@@ -11,16 +11,25 @@ namespace GetOut.Models
     {
         public static bool IsCollide(Entity entity, int dirX, int dirY)
         {
+            if (CheckBoundaries(entity, dirX, dirY))
+                return true;
+
             for (var i = 0; i < Game.entitiesOnMap.Count; i++)
             {
                 var currentEntity = Game.entitiesOnMap[i];
-                if (entity.posX + entity.size.Width + dirX > currentEntity.posX &&
-                    entity.posX + dirX < currentEntity.posX + currentEntity.Size.Width &&
-                    entity.posY + entity.size.Height + dirY > currentEntity.posY &&
-                    entity.posY + dirY < currentEntity.posY + currentEntity.Size.Height)
+                if (entity.PosX + entity.Size.Width + dirX > currentEntity.PosX &&
+                    entity.PosX + dirX < currentEntity.PosX + currentEntity.Size.Width &&
+                    entity.PosY + entity.Size.Height + dirY > currentEntity.PosY &&
+                    entity.PosY + dirY < currentEntity.PosY + currentEntity.Size.Height)
                     return true;
             }
             return false;
+        }
+
+        public static bool CheckBoundaries(Entity entity, int dirX, int dirY)
+        {
+            return entity.PosX + dirX * 5<= 0 || entity.PosX + dirX*5 >= Game.cellSize * (Game.mapWidth - 1) ||
+                entity.PosY + dirY*5 <= 0 || entity.PosY + dirY*5 + entity.Size.Height >= Game.cellSize *Game.mapHeight ;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace GetOut.Models
     {
         private readonly string text;
 
-        public Hint(int posX, int posY, Image sprite, string text) : base(posX, posY, sprite)
+        public Hint(int posX, int posY, Size size, string text) : base(posX, posY, size)
         {
             this.text = text;
         }
