@@ -7,19 +7,33 @@ namespace GetOut.Models
 {
     public class Hint: Entity
     {
-        private readonly string text;
+       // private readonly string text;
+        private bool IsACtive = false;
 
-        public Hint(int posX, int posY, Size size, string text) : base(posX, posY, size)
+        public Hint(int posX, int posY, Size size, Image sprite, string name) : base(posX, posY, size, sprite, name)
         {
-            this.text = text;
+            
         }
 
-        public string Text
+        //public string Text
+        //{
+        //    get
+        //    {
+        //        return text;
+        //    }
+        //}
+
+        public bool GetStatus() =>
+            IsACtive;
+
+        public void Activate()
         {
-            get
-            {
-                return text;
-            }
+            IsACtive = true;
+        }
+
+        public void Block()
+        {
+            IsACtive = false;
         }
     }
 }

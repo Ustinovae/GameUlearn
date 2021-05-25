@@ -12,20 +12,18 @@ namespace GetOut.Models
         private readonly int attackFrames;
         private readonly int deathFrames;
 
-        private readonly Image spriteSheet;
-
         private int currentAnimation;
         private int currentFrame;
         private int currentLimit;
+        public Furniture capturedFurniture;
 
-        public Player(int posX, int posY, int idleFrames, int runFrames, int attackFrames, int deathFrames, Image spriteSheet, int width, int height) 
-            : base(posX, posY, new Size(width, height))
+        public Player(int posX, int posY, int idleFrames, int runFrames, int attackFrames, int deathFrames, Image spriteSheet, int width, int height, string name) 
+            : base(posX, posY, new Size(width, height), spriteSheet, name)
         {
             this.idleFrames = idleFrames;
             this.runFrames = runFrames;
             this.attackFrames = attackFrames;
             this.deathFrames = deathFrames;
-            this.spriteSheet = spriteSheet;
             SpeedValue = 5;
             currentLimit = idleFrames;
         }
@@ -48,15 +46,31 @@ namespace GetOut.Models
             DirY = 0;
         }
 
+        public void TakeAnFurniture()
+        {
+
+            capturedFurniture = (Furniture)Physics.CheckContactWithObject(this, typeof(Furniture));
+        }
+
+        public void ReleaseObject()
+        {
+            capturedFurniture = null;
+        }
+
         public void Act()
         {
-            PosX += DirX * SpeedValue;
-            PosY += DirY * SpeedValue;
+            if (capturedFurniture != null)
+                capturedFurniture.Move(DirX * SpeedValue, DirY * SpeedValue);
+            if ((capturedFurniture != null && !capturedFurniture.CheckCollide()) || capturedFurniture == null)
+            {
+                PosX += DirX * SpeedValue;
+                PosY += DirY * SpeedValue;
+            }
         }
 
         public void PlayAnimation(Graphics g)
         {
-            g.DrawImage(spriteSheet,
+            g.DrawImage(Sprite,
                 new Rectangle(new Point(base.PosX, PosY),
                 new Size(Size.Width, Size.Height)),
                 Size.Width * currentFrame,
