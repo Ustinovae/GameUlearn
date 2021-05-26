@@ -85,7 +85,10 @@ namespace GetOut.Models
         public void PlayAnimation(Graphics g)
         {
             if (block)
-                SetAnimationConfiguration(0);
+                if (Flip)
+                    SetAnimationConfiguration(3);
+                else
+                    SetAnimationConfiguration(0);
             g.DrawImage(Sprite,
                 new Rectangle(new Point(base.PosX, PosY),
                 new Size(Size.Width, Size.Height)),

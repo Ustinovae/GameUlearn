@@ -58,7 +58,7 @@ namespace GetOut.Models
                     if (map[i, j] == 3)
                     {
                         var image = new Bitmap(Path.Combine(new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.Parent.Parent.ToString(), pathsToHints[hintOnLevels.Count]));
-                        hintOnLevels.Add(new Hint(j * cellSize, i * cellSize, new Size(200, 150), image, "Hint"));
+                        hintOnLevels.Add(new Hint(j * cellSize, i * cellSize, new Size(image.Width, image.Height), image, "Hint"));
                     }
                 }
             }

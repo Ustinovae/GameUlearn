@@ -18,10 +18,39 @@ namespace GetOutWinForm
         public Player player;
         public Timer updateTimer = new();
         public LevelsManager levelsManager;
+        public Panel panel;
+        public Label CheckTake;
+        public Label hint;
+        public Label desOfman;
+        public TextBox input;
 
 
         public GetOutWinForm()
         {
+            panel = new Panel();
+            panel.Dock = DockStyle.Right;
+            Controls.Add(panel);
+
+            input = new TextBox();
+
+
+            hint = new Label();
+            hint.Width = panel.Width;
+            
+            CheckTake = new Label();
+            CheckTake.Text = "Holds object: False";
+            CheckTake.Width = panel.Width;
+            CheckTake.Location = new Point(0, 25);
+
+            desOfman = new Label();
+            desOfman.Location = new Point(0, 50);
+            desOfman.Size = new Size(panel.Width, 100);
+            desOfman.Text = "T - взять \nR - отпустить \nG - показать подсказку \nB - вернуться в игру \nWSAD - обычное управление"; 
+
+            panel.Controls.Add(hint);
+            panel.Controls.Add(CheckTake);
+            panel.Controls.Add(desOfman);
+             
             InitializeComponent();
             DoubleBuffered = true;
             updateTimer.Interval = 50;
@@ -38,7 +67,7 @@ namespace GetOutWinForm
             levelsManager = new LevelsManager();
             levelsManager.ChangeLevel(1);
             Game.Intit();
-            this.Width = Game.cellSize * Game.mapWidth + 15;
+            this.Width = Game.cellSize * Game.mapWidth + 215;
             this.Height = Game.cellSize * Game.mapHeight + 40;
             var directorySprites = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.Parent.Parent;
             var pathToPlayer = new Bitmap(Path.Combine(directorySprites.ToString(), "EntitySprites\\Player.png"));
@@ -87,12 +116,14 @@ namespace GetOutWinForm
                     break;
                 case Keys.T:
                     player.TakeAnFurniture();
+                    if (player.capturedFurniture != null)
+                        CheckTake.Text = "Holds object: True";
                     break;
                 case Keys.R:
                     player.ReleaseObject();
+                    CheckTake.Text = "Holds object: False";
                     break;
                 case Keys.G:
-                    
                     var cur = Physics.HintsTrigger(player);
                     if (cur != null)
                     {
@@ -108,12 +139,18 @@ namespace GetOutWinForm
                 case Keys.D1:
                     player.ReleaseObject();
                     levelsManager.ChangeLevel(1);
+                    CheckTake.Text = "Holds object: False";
                     break;
                 case Keys.D2:
                     player.ReleaseObject();
                     levelsManager.ChangeLevel(2);
+                    CheckTake.Text = "Holds object: False";
                     break;
-
+                case Keys.D3:
+                    player.ReleaseObject();
+                    levelsManager.ChangeLevel(3);
+                    CheckTake.Text = "Holds object: False";
+                    break;
             }
         }
 
@@ -128,6 +165,10 @@ namespace GetOutWinForm
         {
             if (!Physics.IsCollide(player, player.DirX, player.DirY))
                 player.Act();
+            if (Physics.HintsTrigger(player) != null)
+                hint.Text = "Hint near you";
+            else
+                hint.Text = "There's no hint near you";
             Invalidate();
         }
     }
