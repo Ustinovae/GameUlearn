@@ -12,6 +12,7 @@ namespace GetOut.Models
         private readonly int attackFrames;
         private readonly int deathFrames;
 
+        private bool block = false;
         private int currentAnimation;
         private int currentFrame;
         private int currentLimit;
@@ -57,19 +58,34 @@ namespace GetOut.Models
             capturedFurniture = null;
         }
 
+        public void Block()
+        {
+            block = true;
+        }
+
+        public void Unblock()
+        {
+            block = false;
+        }
+
         public void Act()
         {
-            if (capturedFurniture != null)
-                capturedFurniture.Move(DirX * SpeedValue, DirY * SpeedValue);
-            if ((capturedFurniture != null && !capturedFurniture.CheckCollide()) || capturedFurniture == null)
+            if (!block)
             {
-                PosX += DirX * SpeedValue;
-                PosY += DirY * SpeedValue;
+                if (capturedFurniture != null)
+                    capturedFurniture.Move(DirX * SpeedValue, DirY * SpeedValue);
+                if ((capturedFurniture != null && !capturedFurniture.CheckCollide()) || capturedFurniture == null)
+                {
+                    PosX += DirX * SpeedValue;
+                    PosY += DirY * SpeedValue;
+                }
             }
         }
 
         public void PlayAnimation(Graphics g)
         {
+            if (block)
+                SetAnimationConfiguration(0);
             g.DrawImage(Sprite,
                 new Rectangle(new Point(base.PosX, PosY),
                 new Size(Size.Width, Size.Height)),

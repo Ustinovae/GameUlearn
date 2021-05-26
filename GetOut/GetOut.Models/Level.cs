@@ -10,11 +10,13 @@ namespace GetOut.Models
     {
         public int NumberLevel;
         public int[,] Map;
+        public List<string> PathsToHints;
 
-        public Level(int [,] map, int numberLevel)
+        public Level(int [,] map, int numberLevel, List<string> pathsToHints)
         {
             Map = map;
             NumberLevel = numberLevel;
+            PathsToHints = pathsToHints;
         }
     }
 }

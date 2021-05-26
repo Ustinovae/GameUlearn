@@ -51,5 +51,20 @@ namespace GetOut.Models
             }
             return null;
         }
+
+        public static Hint HintsTrigger(Entity entity)
+        {
+            for (var i = 0; i < Game.hintOnLevels.Count; i++)
+            {
+                var currentEntity = Game.hintOnLevels[i];
+                if (entity.PosX + entity.Size.Width > currentEntity.PosX &&
+                    entity.PosX  < currentEntity.PosX + currentEntity.Size.Width &&
+                    entity.PosY + entity.Size.Height> currentEntity.PosY &&
+                    entity.PosY < currentEntity.PosY + currentEntity.Size.Height
+                    && entity != currentEntity)
+                    return currentEntity;
+            }
+            return null;
+        }
     }
 }

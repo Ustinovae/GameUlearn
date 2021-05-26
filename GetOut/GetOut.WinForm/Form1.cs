@@ -92,10 +92,16 @@ namespace GetOutWinForm
                     player.ReleaseObject();
                     break;
                 case Keys.G:
-                    foreach (var hint in Game.hintOnLevels)
-                        hint.Activate();
+                    
+                    var cur = Physics.HintsTrigger(player);
+                    if (cur != null)
+                    {
+                        player.Block();
+                        cur.Activate();
+                    }
                     break;
                 case Keys.B:
+                    player.Unblock();
                     foreach (var hint in Game.hintOnLevels)
                         hint.Block();
                     break;
@@ -114,8 +120,8 @@ namespace GetOutWinForm
         private void OnPaint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            Game.DrawMap(g);
             player.PlayAnimation(g);
+            Game.DrawMap(g);
         }
 
         private void Update(object sender, EventArgs e)

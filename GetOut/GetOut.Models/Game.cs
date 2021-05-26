@@ -16,15 +16,14 @@ namespace GetOut.Models
         private static Image spriteChest;
         public static List<Entity> entitiesOnMap;
         public static List<Hint> hintOnLevels;
+        public static List<string> pathsToHints;
 
         public static void Intit()
         {
-            //map = GetMap();
             spriteSheet = new Bitmap(Path.Combine(new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.Parent.Parent.ToString(), "EntitySprites\\barier.png"));
             spriteChest = new Bitmap(Path.Combine(new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.Parent.Parent.ToString(), "EntitySprites\\chest.png"));
 
             InitMap();
-
         }
 
         public static void DrawMap(Graphics g)
@@ -58,7 +57,8 @@ namespace GetOut.Models
                     }
                     if (map[i, j] == 3)
                     {
-                        hintOnLevels.Add(new Hint(j * cellSize, i * cellSize, new Size(cellSize, cellSize), spriteChest, "Hint"));
+                        var image = new Bitmap(Path.Combine(new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.Parent.Parent.ToString(), pathsToHints[hintOnLevels.Count]));
+                        hintOnLevels.Add(new Hint(j * cellSize, i * cellSize, new Size(200, 150), image, "Hint"));
                     }
                 }
             }
