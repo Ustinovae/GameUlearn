@@ -10,79 +10,65 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using GetOut.Models;
 
-namespace GetOutWinForm
+namespace GetOut.WinForm
 {
     public partial class GetOutWinForm : Form
     {
+        private readonly int idleFrames = 2;
+        private readonly int runFrames = 6;
+        //private readonly int deathFrames = 3;
+        private int currentAnimation;
+        private int currentFrame;
+        private int currentLimit = 2;
+
+        private Enemy enemy;
+
+        private Image Sprite = Properties.Resources.Player;
+        public bool Flip;
+
         public Image playerSheet;
         public Player player;
         public Timer updateTimer = new();
         public LevelsManager levelsManager;
-        public Panel panel;
-        public Label CheckTake;
-        public Label hint;
-        public Label desOfman;
-        public TextBox input;
+        public Map map;
 
+        private readonly Menu MainForm;
 
-        public GetOutWinForm()
+        public GetOutWinForm(Menu mainForm)
         {
-            panel = new Panel();
-            panel.Dock = DockStyle.Right;
-            Controls.Add(panel);
-
-            input = new TextBox();
-
-
-            hint = new Label();
-            hint.Width = panel.Width;
-            
-            CheckTake = new Label();
-            CheckTake.Text = "Holds object: False";
-            CheckTake.Width = panel.Width;
-            CheckTake.Location = new Point(0, 25);
-
-            desOfman = new Label();
-            desOfman.Location = new Point(0, 50);
-            desOfman.Size = new Size(panel.Width, 100);
-            desOfman.Text = "T - взять \nR - отпустить \nG - показать подсказку \nB - вернуться в игру \nWSAD - обычное управление"; 
-
-            panel.Controls.Add(hint);
-            panel.Controls.Add(CheckTake);
-            panel.Controls.Add(desOfman);
-             
             InitializeComponent();
+            MainForm = mainForm;
+            StartPosition = FormStartPosition.CenterScreen;
+
             DoubleBuffered = true;
-            updateTimer.Interval = 50;
+            updateTimer.Interval = 80;
             updateTimer.Tick += new EventHandler(Update);
 
             KeyDown += new KeyEventHandler(OnPress);
             KeyUp += new KeyEventHandler(OnKeyUp);
-
+            FormClosed += CloseButton_Click;
             Init();
         }
 
         private void Init()
         {
             levelsManager = new LevelsManager();
-            levelsManager.ChangeLevel(1);
-            Game.Intit();
-            this.Width = Game.cellSize * Game.mapWidth + 215;
-            this.Height = Game.cellSize * Game.mapHeight + 40;
-            var directorySprites = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.Parent.Parent;
-            var pathToPlayer = new Bitmap(Path.Combine(directorySprites.ToString(), "EntitySprites\\Player.png"));
-            playerSheet = pathToPlayer;
-            player = new Player(480, 480, 2, 6, 3, 3, playerSheet, 30, 60, "Player");
+            map = levelsManager.ChangeLevel(1);
+            this.Width = Map.CellSize * Map.MapWidth;
+            this.Height = Map.CellSize * Map.MapHeight + 40;
+            player = Map.Player;
+            this.BackgroundImage = Properties.Resources.BackGround;
+            enemy = map.enemy;
+
             updateTimer.Start();
-            this.BackgroundImage = new Bitmap(Path.Combine(new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.Parent.Parent.ToString(), "EntitySprites\\BackGround.png"));
         }
 
         private void OnKeyUp(object sender, KeyEventArgs e)
         {
-            if (player.Flip)
-                player.SetAnimationConfiguration(3);
+            if (Flip)
+                SetAnimationConfiguration(3);
             else
-                player.SetAnimationConfiguration(0);
+                SetAnimationConfiguration(0);
             player.StopMove();
         }
 
@@ -92,84 +78,172 @@ namespace GetOutWinForm
             {
                 case Keys.W:
                     player.StartMove(0, -1);
-                    if (player.Flip)
-                        player.SetAnimationConfiguration(2);
+                    if (Flip)
+                        SetAnimationConfiguration(2);
                     else
-                        player.SetAnimationConfiguration(1);
+                        SetAnimationConfiguration(1);
                     break;
                 case Keys.S:
                     player.StartMove(0, 1);
-                    if (player.Flip)
-                        player.SetAnimationConfiguration(2);
+                    if (Flip)
+                        SetAnimationConfiguration(2);
                     else
-                        player.SetAnimationConfiguration(1);
+                        SetAnimationConfiguration(1);
                     break;
                 case Keys.A:
                     player.StartMove(-1, 0);
-                    player.Flip = true;
-                    player.SetAnimationConfiguration(2);
+                    Flip = true;
+                    SetAnimationConfiguration(2);
                     break;
                 case Keys.D:
                     player.StartMove(1, 0);
-                    player.Flip = false;
-                    player.SetAnimationConfiguration(1);
+                    Flip = false;
+                    SetAnimationConfiguration(1);
                     break;
                 case Keys.T:
-                    player.TakeAnFurniture();
-                    if (player.capturedFurniture != null)
-                        CheckTake.Text = "Holds object: True";
+                    player.TakeAnFurniture(map);
                     break;
                 case Keys.R:
                     player.ReleaseObject();
-                    CheckTake.Text = "Holds object: False";
-                    break;
-                case Keys.G:
-                    var cur = Physics.HintsTrigger(player);
-                    if (cur != null)
-                    {
-                        player.Block();
-                        cur.Activate();
-                    }
-                    break;
-                case Keys.B:
-                    player.Unblock();
-                    foreach (var hint in Game.hintOnLevels)
-                        hint.Block();
-                    break;
-                case Keys.D1:
-                    player.ReleaseObject();
-                    levelsManager.ChangeLevel(1);
-                    CheckTake.Text = "Holds object: False";
-                    break;
-                case Keys.D2:
-                    player.ReleaseObject();
-                    levelsManager.ChangeLevel(2);
-                    CheckTake.Text = "Holds object: False";
-                    break;
-                case Keys.D3:
-                    player.ReleaseObject();
-                    levelsManager.ChangeLevel(3);
-                    CheckTake.Text = "Holds object: False";
                     break;
             }
+        }
+
+        private void CloseButton_Click(object sender, EventArgs e)
+        {
+            MainForm.Show();
+        }
+
+        private void Win()
+        {
+            var panel = new Panel();
+            // panel.Dock = DockStyle.Fill;
+
+            var text = new Label();
+            text.Text = "К сожалению ты проиграл. Может попробуешь еще раз?";
+            text.Size = new Size(panel.Width, panel.Height / 3);
+            text.Location = new Point(0, panel.Height / 3);
+            text.AutoSize = false;
+
+            var button = new Button();
+            button.Text = "Restart";
+            button.Location = new Point(0, panel.Height * 2 / 3);
+            button.Click += (s, e) =>
+            {
+                levelsManager.GetNextLevel();
+                Controls.Clear();
+                Init();
+            };
+
+            panel.Controls.Add(button);
+            panel.Controls.Add(text);
+            Controls.Add(panel);
+        }
+
+        private void Losing()
+        {
+            var panel = new Panel();
+            var text = new Label();
+            text.Text = "К сожалению ты проиграл. Может попробуешь еще раз?";
+            text.Size = new Size(panel.Width, panel.Height / 3);
+            text.Location = new Point(0, panel.Height / 3);
+            text.AutoSize = false;
+
+            var button = new Button();
+            button.Text = "Restart";
+            button.Location = new Point(0, panel.Height * 2 / 3);
+            button.Click += (s, e) =>
+            {
+                levelsManager.Restart();
+                Controls.Clear();
+                Init();
+            };
+
+            panel.Controls.Add(button);
+            panel.Controls.Add(text);
+            Controls.Add(panel);
+        }
+
+        private void Update(object sender, EventArgs e)
+        {
+            if (map.Lose)
+                Losing();
+            enemy.MoveTo(new Point(player.PosX, player.PosY), map);
+            if (!Map.IsCollide(player, new Point(player.PosX + player.DirX, player.DirY + player.PosY)))
+                player.Act(map);
+            var cur = map.HintTrigger(player);
+            if (cur != null)
+            {
+                cur.SetActive(true);
+            }
+            else
+            {
+                foreach (var hint in Map.HintOnLevels)
+                    hint.SetActive(false);
+            }
+            Invalidate();
         }
 
         private void OnPaint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            player.PlayAnimation(g);
-            Game.DrawMap(g);
+            DrawMap(g);
         }
 
-        private void Update(object sender, EventArgs e)
+        private void DrawMap(Graphics g)
         {
-            if (!Physics.IsCollide(player, player.DirX, player.DirY))
-                player.Act();
-            if (Physics.HintsTrigger(player) != null)
-                hint.Text = "Hint near you";
-            else
-                hint.Text = "There's no hint near you";
-            Invalidate();
+            foreach (var entity in Map.EntitiesOnMap)
+            {
+                switch (entity.Name)
+                {
+                    case "Barrier":
+                        g.DrawImage(Properties.Resources.barier, new Point(entity.PosX, entity.PosY));
+                        break;
+                    case "Furniture":
+                        g.DrawImage(Properties.Resources.chest, new Point(entity.PosX, entity.PosY));
+                        break;
+                    case "Enemy":
+                        g.DrawImage(Properties.Resources.Enemy, new Point(entity.PosX, entity.PosY));
+                        break;
+                }
+            }
+            g.DrawImage(Sprite,
+                            new Rectangle(new Point(player.PosX, player.PosY),
+                            new Size(player.Size.Width, player.Size.Height)),
+                            player.Size.Width * currentFrame,
+                            player.Size.Height * currentAnimation,
+                            player.Size.Width,
+                            player.Size.Height,
+                            GraphicsUnit.Pixel);
+            if (currentFrame < currentLimit - 1) currentFrame += 1;
+            else currentFrame = 0;
+
+            foreach (var hint in Map.HintOnLevels)
+            {
+                if (hint.GetStatus())
+                    g.DrawImage(hint.Sprite, new Point(hint.PosX, hint.PosY));
+            }
+        }
+
+        private void SetAnimationConfiguration(int currentAnimation)
+        {
+            this.currentAnimation = currentAnimation;
+
+            switch (currentAnimation)
+            {
+                case 0:
+                    currentLimit = idleFrames;
+                    break;
+                case 1:
+                    currentLimit = runFrames;
+                    break;
+                case 2:
+                    currentLimit = runFrames;
+                    break;
+                case 3:
+                    currentLimit = idleFrames;
+                    break;
+            }
         }
     }
 }

@@ -7,23 +7,17 @@ namespace GetOut.Models
 {
     public class Entity
     {
-        public int PosX;
-        public int PosY;
-        public Image Sprite { get; }
-        private string Name;
-
-        public Size Size;
-
-        public Entity(int posX, int posY, Size size, Image sprite, string name)
+        public Entity(int posX, int posY, Size size, string name)
         {
-            this.PosX = posX;
-            this.PosY = posY;
-            this.Size = size;
-            Sprite = sprite;
+            PosX = posX;
+            PosY = posY;
+            Size = size;
             Name = name;
         }
 
-        public string GetName() =>
-            Name;
+        public Size Size { get; }
+        public int PosX { get; set; }
+        public int PosY { get; set; }
+        public string Name { get; }
     }
 }

@@ -9,22 +9,17 @@ namespace GetOut.Models
     {
         private bool IsACtive = false;
         
-        public Hint(int posX, int posY, Size size, Image sprite, string name) : base(posX, posY, size, sprite, name)
+        public Hint(int posX, int posY, Size size, Image sprite, string name) : base(posX, posY, size, name)
         {
-            
+            Sprite = sprite;
         }
+
+        public Image Sprite { get; }
 
         public bool GetStatus() =>
             IsACtive;
 
-        public void Activate()
-        {
-            IsACtive = true;
-        }
-
-        public void Block()
-        {
-            IsACtive = false;
-        }
+        public void SetActive(bool s) =>
+            IsACtive = s;
     }
 }

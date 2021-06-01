@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace GetOutWinForm
+namespace GetOut.WinForm
 {
     static class Program
     {
@@ -17,7 +17,7 @@ namespace GetOutWinForm
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GetOutWinForm());
+            Application.Run(new Menu());
         }
     }
 }

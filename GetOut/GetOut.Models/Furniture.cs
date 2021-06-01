@@ -8,16 +8,17 @@ namespace GetOut.Models
     public class Furniture : Entity
     {
         private bool collided = false;
-        public Furniture(int posX, int posY, Size size, Image sprite, string name) :base(posX, posY, size, sprite, name) 
+
+        public Furniture(int posX, int posY, Size size, string name) :base(posX, posY, size, name) 
         {
         }
 
         public bool CheckCollide() =>
             collided;
 
-        public void Move(int dirX, int dirY)
+        public void Move(int dirX, int dirY, Map map)
         {
-            collided = Physics.IsCollide(this, dirX, dirY);
+            collided = Map.IsCollide(this, new Point(PosX + dirX, PosY + dirY));
             if (!collided)
             {
                 PosY += dirY;
