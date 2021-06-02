@@ -12,12 +12,16 @@ namespace GetOut.Models
 
         public Dictionary<int, Level> Levels = new Dictionary<int, Level>
         {
-            { 1, new Level(Properties.Resources.TextFile1, 1, 
+            { 0, new Level(Properties.Resources.Level1, 0, 
+                new List<string>{ "EntitySprites\\Hint3.png", "EntitySprites\\Hint5.png", "EntitySprites\\Hint.png", "EntitySprites\\exit.png", "EntitySprites\\Hint4.png"}) },
+            { 1, new Level(Properties.Resources.Level2, 1,
                 new List<string>{ "EntitySprites\\Himt2.png", "EntitySprites\\Hint3.png","EntitySprites\\Hint.png"}) }
         };
 
         public Map GetNextLevel()
         {
+            if (currentLevel == null)
+                return ChangeLevel(0);
             var num = currentLevel.NumberLevel + 1;
             if (!Levels.ContainsKey(num))
                 Restart();

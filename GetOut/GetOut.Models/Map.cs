@@ -10,7 +10,7 @@ namespace GetOut.Models
     {
         public const int CellSize = 30;
 
-        private Map(List<Entity> entitiesOnMap, List<Hint> hintOnLevels, int indexEnemy, int mapHeight, int mapWidth)
+        private Map(List<Entity> entitiesOnMap, List<Hint> hintOnLevels, int indexEnemy, int mapHeight, int mapWidth, Point winPos, Player player)
         {
             MapHeight = mapHeight;
             MapWidth = mapWidth;
@@ -18,16 +18,20 @@ namespace GetOut.Models
             Lose = false;
             EntitiesOnMap = entitiesOnMap;
             HintOnLevels = hintOnLevels;
-            if(indexEnemy != -1)
+            WinPos = winPos;
+            Player = player;
+            if (indexEnemy != -1)
                 enemy = (Enemy)entitiesOnMap[indexEnemy];
         }
 
         public static int MapHeight { get; set; }
         public static int MapWidth { get; set; }
-        public static List<Entity> EntitiesOnMap { get; set; }
-        public static List<Hint> HintOnLevels { get; set; }
-        public static Player Player { get; set; }
+        public List<Entity> EntitiesOnMap { get; set; }
+        public List<Hint> HintOnLevels { get; set; }
+
+        public Player Player { get; set; }
         public Enemy enemy { get; set; }
+        private Point WinPos { get; }
 
         public bool Win { get; set; }
         public bool Lose { get; set; }
@@ -40,7 +44,9 @@ namespace GetOut.Models
 
         public static Map FromLines(string[] lines, List<string> pathsToHints)
         {
+            Player player = null;
             var indexEnemy = -1;
+            var winPos = new Point(int.MinValue, int.MinValue);
             var entitiesOnMap = new List<Entity>();
             var hintOnLevels = new List<Hint>();
             for (var y = 0; y< lines.Length; y++)
@@ -64,15 +70,24 @@ namespace GetOut.Models
                             entitiesOnMap.Add(new Enemy(x * CellSize, y * CellSize, CellSize, 2*CellSize, "Enemy"));
                             break;
                         case 'P':
-                            Player = new Player(x * CellSize, y * CellSize, CellSize, 2*CellSize, "Player");
+                            player = new Player(x * CellSize, y * CellSize, CellSize, 2*CellSize, "Player");
+                            break;
+                        case 'w':
+                            winPos.X = x * CellSize;
+                            winPos.Y = y * CellSize;
                             break;
                     }
                 }
             }
-            return new Map(entitiesOnMap, hintOnLevels, indexEnemy, lines.Length, lines[1].Length);
+            return new Map(entitiesOnMap, hintOnLevels, indexEnemy, lines.Length, lines[1].Length, winPos, player);
         }
 
-        public static bool IsCollide(Entity entity, Point nextPoint)
+        public bool CheckWin()
+        {
+            return Player.PosX == WinPos.X && Player.PosY == WinPos.Y;
+        }
+
+        public bool IsCollide(Entity entity, Point nextPoint)
         {
             if (CheckBoundaries(entity, nextPoint))
                 return true;
@@ -90,7 +105,7 @@ namespace GetOut.Models
             return false;
         }
 
-        public static bool CheckBoundaries(Entity entity, Point nextPoiny)
+        public bool CheckBoundaries(Entity entity, Point nextPoiny)
         {
             return nextPoiny.X < 0 || nextPoiny.X + entity.Size.Width > CellSize * MapWidth ||
                 nextPoiny.Y < 0 || nextPoiny.Y + entity.Size.Height > CellSize * MapHeight;

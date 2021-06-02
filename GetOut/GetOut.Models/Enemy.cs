@@ -9,8 +9,8 @@ namespace GetOut.Models
     public class Enemy : Entity
     {
         private readonly Point[] vectors = new Point[] {
-            new Point(5, 0), new Point(0, 5),
-            new Point(-5, 0), new Point(0, -5) };
+            new Point(10, 0), new Point(0, 10),
+            new Point(-10, 0), new Point(0, -10) };
 
         public Enemy(int posX, int posY, int width, int height, string name)
             : base(posX, posY, new Size(width, height), name)
@@ -42,7 +42,7 @@ namespace GetOut.Models
             while (queue.Count > 0)
             {
                 var point = queue.Dequeue();
-                if (Map.IsCollide(this, point))
+                if (map.IsCollide(this, point))
                     continue;
 
                 foreach (var vector in vectors)

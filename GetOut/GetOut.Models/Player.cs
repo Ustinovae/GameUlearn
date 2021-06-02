@@ -32,6 +32,9 @@ namespace GetOut.Models
             DirY = 0;
         }
 
+        public bool TakeStatus() =>
+            capturedFurniture != null;
+
         public void TakeAnFurniture(Map map) =>
             capturedFurniture = (Furniture)map.CheckContactWithObject(this, "Furniture");
 
@@ -40,12 +43,15 @@ namespace GetOut.Models
         
         public void Act(Map map)
         {
-            if (capturedFurniture != null)
-                capturedFurniture.Move(DirX * SpeedValue, DirY * SpeedValue, map);
-            if ((capturedFurniture != null && !capturedFurniture.CheckCollide()) || capturedFurniture == null)
+            if(!map.IsCollide(this, new Point(PosX+DirX*SpeedValue, PosY + DirY * SpeedValue)))
             {
-                PosX += DirX * SpeedValue;
-                PosY += DirY * SpeedValue;
+                if (capturedFurniture != null)
+                    capturedFurniture.Move(DirX * SpeedValue, DirY * SpeedValue, map);
+                if ((capturedFurniture != null && !capturedFurniture.CheckCollide()) || capturedFurniture == null)
+                {
+                    PosX += DirX * SpeedValue;
+                    PosY += DirY * SpeedValue;
+                }
             }
         }
     }

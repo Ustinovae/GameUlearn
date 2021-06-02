@@ -14,23 +14,17 @@ namespace GetOut.WinForm
 {
     public partial class GetOutWinForm : Form
     {
-        private readonly int idleFrames = 2;
-        private readonly int runFrames = 6;
-        //private readonly int deathFrames = 3;
         private int currentAnimation;
         private int currentFrame;
-        private int currentLimit = 2;
+        private int currentLimit = 4;
 
         private Enemy enemy;
+        private bool Flip;
 
-        private Image Sprite = Properties.Resources.Player;
-        public bool Flip;
-
-        public Image playerSheet;
-        public Player player;
-        public Timer updateTimer = new();
-        public LevelsManager levelsManager;
-        public Map map;
+        private Player player;
+        private readonly Timer updateTimer;
+        private readonly LevelsManager levelsManager;
+        private Map map;
 
         private readonly Menu MainForm;
 
@@ -38,26 +32,33 @@ namespace GetOut.WinForm
         {
             InitializeComponent();
             MainForm = mainForm;
-            StartPosition = FormStartPosition.CenterScreen;
+            AutoSize = true;
 
             DoubleBuffered = true;
+
+            updateTimer = new Timer();
             updateTimer.Interval = 80;
             updateTimer.Tick += new EventHandler(Update);
 
             KeyDown += new KeyEventHandler(OnPress);
             KeyUp += new KeyEventHandler(OnKeyUp);
             FormClosed += CloseButton_Click;
+            levelsManager = new LevelsManager();
+
+            map = levelsManager.GetNextLevel();
             Init();
         }
 
         private void Init()
         {
-            levelsManager = new LevelsManager();
-            map = levelsManager.ChangeLevel(1);
+            Flip = false;
+            StartPosition = FormStartPosition.Manual;
             this.Width = Map.CellSize * Map.MapWidth;
-            this.Height = Map.CellSize * Map.MapHeight + 40;
-            player = Map.Player;
+            this.Height = Map.CellSize * Map.MapHeight+40;
+            player = map.Player;
             this.BackgroundImage = Properties.Resources.BackGround;
+            SetAnimationConfiguration(0);
+            currentLimit = 4;
             enemy = map.enemy;
 
             updateTimer.Start();
@@ -66,7 +67,7 @@ namespace GetOut.WinForm
         private void OnKeyUp(object sender, KeyEventArgs e)
         {
             if (Flip)
-                SetAnimationConfiguration(3);
+                SetAnimationConfiguration(1);
             else
                 SetAnimationConfiguration(0);
             player.StopMove();
@@ -79,26 +80,26 @@ namespace GetOut.WinForm
                 case Keys.W:
                     player.StartMove(0, -1);
                     if (Flip)
-                        SetAnimationConfiguration(2);
+                        SetAnimationConfiguration(3);
                     else
-                        SetAnimationConfiguration(1);
+                        SetAnimationConfiguration(2);
                     break;
                 case Keys.S:
                     player.StartMove(0, 1);
                     if (Flip)
-                        SetAnimationConfiguration(2);
+                        SetAnimationConfiguration(3);
                     else
-                        SetAnimationConfiguration(1);
+                        SetAnimationConfiguration(2);
                     break;
                 case Keys.A:
                     player.StartMove(-1, 0);
                     Flip = true;
-                    SetAnimationConfiguration(2);
+                    SetAnimationConfiguration(3);
                     break;
                 case Keys.D:
                     player.StartMove(1, 0);
                     Flip = false;
-                    SetAnimationConfiguration(1);
+                    SetAnimationConfiguration(2);
                     break;
                 case Keys.T:
                     player.TakeAnFurniture(map);
@@ -117,22 +118,21 @@ namespace GetOut.WinForm
         private void Win()
         {
             var panel = new Panel();
-            // panel.Dock = DockStyle.Fill;
 
             var text = new Label();
-            text.Text = "К сожалению ты проиграл. Может попробуешь еще раз?";
+            text.Text = "Вау, ты выйграл! Сыграем дальше?";
             text.Size = new Size(panel.Width, panel.Height / 3);
             text.Location = new Point(0, panel.Height / 3);
             text.AutoSize = false;
 
             var button = new Button();
-            button.Text = "Restart";
+            button.Text = "Next Level";
             button.Location = new Point(0, panel.Height * 2 / 3);
             button.Click += (s, e) =>
             {
-                levelsManager.GetNextLevel();
-                Controls.Clear();
+                map = levelsManager.GetNextLevel();
                 Init();
+                Controls.Clear();
             };
 
             panel.Controls.Add(button);
@@ -140,8 +140,9 @@ namespace GetOut.WinForm
             Controls.Add(panel);
         }
 
-        private void Losing()
+        private void Lose()
         {
+            SetAnimationConfiguration(8);
             var panel = new Panel();
             var text = new Label();
             text.Text = "К сожалению ты проиграл. Может попробуешь еще раз?";
@@ -154,9 +155,9 @@ namespace GetOut.WinForm
             button.Location = new Point(0, panel.Height * 2 / 3);
             button.Click += (s, e) =>
             {
-                levelsManager.Restart();
-                Controls.Clear();
+                map = levelsManager.ChangeLevel(levelsManager.currentLevel.NumberLevel);
                 Init();
+                Controls.Clear();
             };
 
             panel.Controls.Add(button);
@@ -167,20 +168,18 @@ namespace GetOut.WinForm
         private void Update(object sender, EventArgs e)
         {
             if (map.Lose)
-                Losing();
-            enemy.MoveTo(new Point(player.PosX, player.PosY), map);
-            if (!Map.IsCollide(player, new Point(player.PosX + player.DirX, player.DirY + player.PosY)))
-                player.Act(map);
+                Lose();
+            if (map.CheckWin())
+                Win();
+            else
+                enemy.MoveTo(new Point(player.PosX, player.PosY), map);
+            player.Act(map);
             var cur = map.HintTrigger(player);
             if (cur != null)
-            {
                 cur.SetActive(true);
-            }
             else
-            {
-                foreach (var hint in Map.HintOnLevels)
+                foreach (var hint in map.HintOnLevels)
                     hint.SetActive(false);
-            }
             Invalidate();
         }
 
@@ -192,7 +191,8 @@ namespace GetOut.WinForm
 
         private void DrawMap(Graphics g)
         {
-            foreach (var entity in Map.EntitiesOnMap)
+            
+            foreach (var entity in map.EntitiesOnMap)
             {
                 switch (entity.Name)
                 {
@@ -207,41 +207,68 @@ namespace GetOut.WinForm
                         break;
                 }
             }
-            g.DrawImage(Sprite,
-                            new Rectangle(new Point(player.PosX, player.PosY),
-                            new Size(player.Size.Width, player.Size.Height)),
-                            player.Size.Width * currentFrame,
-                            player.Size.Height * currentAnimation,
-                            player.Size.Width,
-                            player.Size.Height,
-                            GraphicsUnit.Pixel);
-            if (currentFrame < currentLimit - 1) currentFrame += 1;
-            else currentFrame = 0;
 
-            foreach (var hint in Map.HintOnLevels)
+            foreach (var hint in map.HintOnLevels)
             {
                 if (hint.GetStatus())
                     g.DrawImage(hint.Sprite, new Point(hint.PosX, hint.PosY));
             }
+            DrawPlayer(g);
+        }
+
+        private void DrawPlayer(Graphics g)
+        {
+            if (currentAnimation == 8)
+                g.DrawImage(Properties.Resources.Plyer3_0,
+                           new Rectangle(new Point(player.PosX, player.PosY),
+                           new Size(player.Size.Height, player.Size.Width)),
+                           player.Size.Width * currentFrame,
+                           player.Size.Height * currentAnimation,
+                           player.Size.Height,
+                           player.Size.Width,
+                           GraphicsUnit.Pixel);
+            else
+                g.DrawImage(Properties.Resources.Plyer3_0,
+                                new Rectangle(new Point(player.PosX, player.PosY),
+                                new Size(player.Size.Width, player.Size.Height)),
+                                player.Size.Width * currentFrame,
+                                player.Size.Height * currentAnimation,
+                                player.Size.Width,
+                                player.Size.Height,
+                                GraphicsUnit.Pixel);
+            if (currentFrame < currentLimit - 1) currentFrame += 1;
+            else currentFrame = 0;
         }
 
         private void SetAnimationConfiguration(int currentAnimation)
         {
-            this.currentAnimation = currentAnimation;
+            if (currentAnimation == 0 && player.TakeStatus())
+                this.currentAnimation = 6;
+            else if (currentAnimation == 1 && player.TakeStatus())
+                this.currentAnimation = 7;
+            else if (currentAnimation == 2 && player.TakeStatus())
+                this.currentAnimation = 4;
+            else if (currentAnimation == 3 && player.TakeStatus())
+                this.currentAnimation = 5;
+            else
+                this.currentAnimation = currentAnimation;
 
             switch (currentAnimation)
             {
                 case 0:
-                    currentLimit = idleFrames;
+                    currentLimit = 4;
                     break;
                 case 1:
-                    currentLimit = runFrames;
+                    currentLimit = 4;
                     break;
                 case 2:
-                    currentLimit = runFrames;
+                    currentLimit = 6;
                     break;
                 case 3:
-                    currentLimit = idleFrames;
+                    currentLimit = 6;
+                    break;
+                case 8:
+                    currentLimit = 1;
                     break;
             }
         }

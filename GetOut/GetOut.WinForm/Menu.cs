@@ -17,7 +17,7 @@ namespace GetOut.WinForm
 
         public Menu()
         {
-            StartPosition = FormStartPosition.CenterScreen;
+            StartPosition = FormStartPosition.Manual;
             mainPanel = new Panel();
             mainPanel.ClientSize = new Size(30 * 20, 30 * 20);
             InitializeComponent();

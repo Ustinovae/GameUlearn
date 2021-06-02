@@ -123,9 +123,9 @@ namespace GetOut.WinForm.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Player {
+        internal static System.Drawing.Bitmap Plyer3_0 {
             get {
-                object obj = ResourceManager.GetObject("Player", resourceCulture);
+                object obj = ResourceManager.GetObject("Plyer3_0", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

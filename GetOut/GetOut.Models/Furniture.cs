@@ -18,7 +18,7 @@ namespace GetOut.Models
 
         public void Move(int dirX, int dirY, Map map)
         {
-            collided = Map.IsCollide(this, new Point(PosX + dirX, PosY + dirY));
+            collided = map.IsCollide(this, new Point(PosX + dirX, PosY + dirY));
             if (!collided)
             {
                 PosY += dirY;

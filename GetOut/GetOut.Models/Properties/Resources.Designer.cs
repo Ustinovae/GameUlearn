@@ -63,28 +63,49 @@ namespace GetOut.Models.Properties {
         /// <summary>
         ///   Looks up a localized string similar to e_____#____________
         ///______#____________
-        ///______#_____f__hf__
+        ///______#_____f__ f__
         ///______#____________
         ///______#            
         ///      #            
         ///      #    #       
         ///###ff##    ########
         ///      f            
-        ///h     f            
-        ///      f            
+        ///h     f           
+        ///      f   f h      
         ///      f            
         ///###f ## h          
         ///      #            
         ///      #            
         ///      #            
+        ///h     #            
         ///      #            
-        ///      #            
-        ///      #   P        
+        ///w     # h  P       
         ///      #            .
         /// </summary>
-        internal static string TextFile1 {
+        internal static string Level1 {
             get {
-                return ResourceManager.GetString("TextFile1", resourceCulture);
+                return ResourceManager.GetString("Level1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _________________________#______________
+        ///_wh______________________#______________
+        ///_________________________#______________
+        ///________________________________________
+        ///________e_______________________________
+        ///________________________________________
+        ///_________________________#______________
+        ///_________________________#______________
+        ///_________________________#______________
+        ///_________________________#______________
+        ///####__##################################
+        ///__________________________________#_____
+        ///________ [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Level2 {
+            get {
+                return ResourceManager.GetString("Level2", resourceCulture);
             }
         }
     }
