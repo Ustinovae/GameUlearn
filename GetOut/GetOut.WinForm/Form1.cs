@@ -24,7 +24,7 @@ namespace GetOut.WinForm
         private Player player;
         private readonly Timer updateTimer;
         private readonly LevelsManager levelsManager;
-        private Map map;
+        private GameMap map;
 
         private readonly Menu MainForm;
 
@@ -53,8 +53,8 @@ namespace GetOut.WinForm
         {
             Flip = false;
             StartPosition = FormStartPosition.Manual;
-            this.Width = Map.CellSize * Map.MapWidth;
-            this.Height = Map.CellSize * Map.MapHeight+40;
+            this.Width = GameMap.CellSize * GameMap.MapWidth;
+            this.Height = GameMap.CellSize * GameMap.MapHeight+40;
             player = map.Player;
             this.BackgroundImage = Properties.Resources.BackGround;
             SetAnimationConfiguration(0);

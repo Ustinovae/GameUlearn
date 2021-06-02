@@ -15,10 +15,10 @@ namespace GetOut.Models
             { 0, new Level(Properties.Resources.Level1, 0, 
                 new List<string>{ "EntitySprites\\Hint3.png", "EntitySprites\\Hint5.png", "EntitySprites\\Hint.png", "EntitySprites\\exit.png", "EntitySprites\\Hint4.png"}) },
             { 1, new Level(Properties.Resources.Level2, 1,
-                new List<string>{ "EntitySprites\\Himt2.png", "EntitySprites\\Hint3.png","EntitySprites\\Hint.png"}) }
+                new List<string>{ "EntitySprites\\exit.png","EntitySprites\\Hint21.png"}) }
         };
 
-        public Map GetNextLevel()
+        public GameMap GetNextLevel()
         {
             if (currentLevel == null)
                 return ChangeLevel(0);
@@ -28,15 +28,15 @@ namespace GetOut.Models
             return ChangeLevel(num);
         }
 
-        public Map ChangeLevel(int Level)
+        public GameMap ChangeLevel(int Level)
         {
             currentLevel = Levels[Level];
-            return Map.ParseFromText(currentLevel.Map, currentLevel.PathsToHints);
+            return GameMap.ParseFromText(currentLevel.Map, currentLevel.PathsToHints);
         }
 
-        public Map Restart()
+        public GameMap Restart()
         {
-            return Map.ParseFromText(currentLevel.Map, currentLevel.PathsToHints);
+            return GameMap.ParseFromText(currentLevel.Map, currentLevel.PathsToHints);
         }
     }
 }

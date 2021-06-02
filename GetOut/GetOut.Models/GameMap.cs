@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace GetOut.Models
 {
-    public class Map
+    public class GameMap
     {
         public const int CellSize = 30;
 
-        private Map(List<Entity> entitiesOnMap, List<Hint> hintOnLevels, int indexEnemy, int mapHeight, int mapWidth, Point winPos, Player player)
+        private GameMap(List<Entity> entitiesOnMap, List<Hint> hintOnLevels, int indexEnemy, int mapHeight, int mapWidth, Point winPos, Player player)
         {
             MapHeight = mapHeight;
             MapWidth = mapWidth;
@@ -36,13 +36,13 @@ namespace GetOut.Models
         public bool Win { get; set; }
         public bool Lose { get; set; }
 
-        public static Map ParseFromText(string text, List<string> pathsToHints)
+        public static GameMap ParseFromText(string text, List<string> pathsToHints)
         {
             var lines = text.Split('\n');
             return FromLines(lines, pathsToHints);
         }
 
-        public static Map FromLines(string[] lines, List<string> pathsToHints)
+        public static GameMap FromLines(string[] lines, List<string> pathsToHints)
         {
             Player player = null;
             var indexEnemy = -1;
@@ -79,12 +79,16 @@ namespace GetOut.Models
                     }
                 }
             }
-            return new Map(entitiesOnMap, hintOnLevels, indexEnemy, lines.Length, lines[1].Length, winPos, player);
+            return new GameMap(entitiesOnMap, hintOnLevels, indexEnemy, lines.Length, lines[1].Length, winPos, player);
         }
 
         public bool CheckWin()
         {
-            return Player.PosX == WinPos.X && Player.PosY == WinPos.Y;
+            return Player.PosX + Player.Size.Width > WinPos.X &&
+                    Player.PosX < WinPos.X + CellSize &&
+                    Player.PosY + Player.Size.Height > WinPos.Y &&
+                    Player.PosY < WinPos.Y + 2 * CellSize;
+                
         }
 
         public bool IsCollide(Entity entity, Point nextPoint)

@@ -17,7 +17,7 @@ namespace GetOut.Models
         {
         }
 
-        public void MoveTo(Point target, Map map)
+        public void MoveTo(Point target, GameMap map)
         {
             if (target == new Point(PosX, PosY))
                 map.Lose = true;
@@ -30,7 +30,7 @@ namespace GetOut.Models
             }
         }
 
-        private SinglyLinkedList<Point> FindPaths(Point start, Point target, Map map)
+        private SinglyLinkedList<Point> FindPaths(Point start, Point target, GameMap map)
         {
             var queue = new Queue<Point>();
             var visited = new HashSet<Point>();

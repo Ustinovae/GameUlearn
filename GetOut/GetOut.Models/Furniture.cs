@@ -16,7 +16,7 @@ namespace GetOut.Models
         public bool CheckCollide() =>
             collided;
 
-        public void Move(int dirX, int dirY, Map map)
+        public void Move(int dirX, int dirY, GameMap map)
         {
             collided = map.IsCollide(this, new Point(PosX + dirX, PosY + dirY));
             if (!collided)

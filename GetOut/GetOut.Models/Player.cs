@@ -35,13 +35,13 @@ namespace GetOut.Models
         public bool TakeStatus() =>
             capturedFurniture != null;
 
-        public void TakeAnFurniture(Map map) =>
+        public void TakeAnFurniture(GameMap map) =>
             capturedFurniture = (Furniture)map.CheckContactWithObject(this, "Furniture");
 
         public void ReleaseObject()=>    
             capturedFurniture = null;
         
-        public void Act(Map map)
+        public void Act(GameMap map)
         {
             if(!map.IsCollide(this, new Point(PosX+DirX*SpeedValue, PosY + DirY * SpeedValue)))
             {
