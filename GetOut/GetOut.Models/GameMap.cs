@@ -21,7 +21,7 @@ namespace GetOut.Models
             WinPos = winPos;
             Player = player;
             if (indexEnemy != -1)
-                enemy = (Enemy)entitiesOnMap[indexEnemy];
+                Enemy = (Enemy)entitiesOnMap[indexEnemy];
         }
 
         public static int MapHeight { get; set; }
@@ -30,19 +30,19 @@ namespace GetOut.Models
         public List<Hint> HintOnLevels { get; set; }
 
         public Player Player { get; set; }
-        public Enemy enemy { get; set; }
+        public Enemy Enemy { get; set; }
         private Point WinPos { get; }
 
         public bool Win { get; set; }
         public bool Lose { get; set; }
 
-        public static GameMap ParseFromText(string text, List<string> pathsToHints)
+        public static GameMap ParseFromText(string text)
         {
             var lines = text.Split('\n');
-            return FromLines(lines, pathsToHints);
+            return FromLines(lines);
         }
 
-        public static GameMap FromLines(string[] lines, List<string> pathsToHints)
+        public static GameMap FromLines(string[] lines)
         {
             Player player = null;
             var indexEnemy = -1;
@@ -53,7 +53,7 @@ namespace GetOut.Models
             {
                 for (var x = 0; x < lines[y].Length; x++)
                 {
-                    switch(lines[y][x])
+                    switch (lines[y][x])
                     {
                         case '#':
                             entitiesOnMap.Add(new Barrier(x * CellSize, y * CellSize, new Size(CellSize, CellSize), "Barrier"));
@@ -62,15 +62,14 @@ namespace GetOut.Models
                             entitiesOnMap.Add(new Furniture(x * CellSize, y * CellSize, new Size(CellSize, CellSize), "Furniture"));
                             break;
                         case 'h':
-                            var image = new Bitmap(Path.Combine(new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.Parent.Parent.ToString(), pathsToHints[hintOnLevels.Count]));
-                            hintOnLevels.Add(new Hint(x * CellSize, y * CellSize, new Size(image.Width, image.Height), image, "Hint"));
+                            hintOnLevels.Add(new Hint(x * CellSize, y * CellSize, new Size(3 * CellSize, 3 * CellSize), "Hint"));
                             break;
                         case 'e':
-                            indexEnemy = entitiesOnMap.Count();
-                            entitiesOnMap.Add(new Enemy(x * CellSize, y * CellSize, CellSize, 2*CellSize, "Enemy"));
+                            indexEnemy = entitiesOnMap.Count;
+                            entitiesOnMap.Add(new Enemy(x * CellSize, y * CellSize, CellSize, 2 * CellSize, "Enemy"));
                             break;
                         case 'P':
-                            player = new Player(x * CellSize, y * CellSize, CellSize, 2*CellSize, "Player");
+                            player = new Player(x * CellSize, y * CellSize, CellSize, 2 * CellSize, "Player");
                             break;
                         case 'w':
                             winPos.X = x * CellSize;

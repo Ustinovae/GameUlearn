@@ -12,25 +12,25 @@ namespace GetOut.Models.Tests
         [Test]
         public void WithoutObjOnMap()
         {
-            var map = GameMap.ParseFromText("e  \n   \n   ", null);
-            map.enemy.MoveTo(new Point(1 * GameMap.CellSize, 1 * GameMap.CellSize), map);
-            Assert.AreEqual(10, map.enemy.PosX);
+            var map = GameMap.ParseFromText("e  \n   \n   ");
+            map.Enemy.MoveTo(new Point(1 * GameMap.CellSize, 1 * GameMap.CellSize), map);
+            Assert.AreEqual(10, map.Enemy.PosX);
         }
 
         [Test]
         public void WhenNoPath()
         {
-            var map = GameMap.ParseFromText("e##\n## \n   ", null);
-            map.enemy.MoveTo(new Point(2 * GameMap.CellSize, 2 * GameMap.CellSize), map);
-            Assert.AreEqual(0, map.enemy.PosY);
+            var map = GameMap.ParseFromText("e##\n## \n   ");
+            map.Enemy.MoveTo(new Point(2 * GameMap.CellSize, 2 * GameMap.CellSize), map);
+            Assert.AreEqual(0, map.Enemy.PosY);
         }
 
         [Test]
         public void WhenNoPathWithoutObjOnMap()
         {
-            var map = GameMap.ParseFromText("e__\n___\n___", null);
-            map.enemy.MoveTo(new Point(1 * GameMap.CellSize, 1 * GameMap.CellSize), map);
-            Assert.AreEqual(10, map.enemy.PosX);
+            var map = GameMap.ParseFromText("e__\n___\n___");
+            map.Enemy.MoveTo(new Point(1 * GameMap.CellSize, 1 * GameMap.CellSize), map);
+            Assert.AreEqual(10, map.Enemy.PosX);
         }
 
         [Test]
@@ -40,10 +40,10 @@ namespace GetOut.Models.Tests
                 "e     #____________\n" +
                 "  _________________\n" +
                 "__________P_ f__f__\n" +
-                "______#____________\n", null);
+                "______#____________\n");
             for (var i = 0; i < 36; i++)
-                map.enemy.MoveTo(new Point(map.Player.PosX, map.Player.PosY), map);
-            Assert.AreEqual(new Point(map.Player.PosX, map.Player.PosY), new Point(map.enemy.PosX, map.enemy.PosY));
+                map.Enemy.MoveTo(new Point(map.Player.PosX, map.Player.PosY), map);
+            Assert.AreEqual(new Point(map.Player.PosX, map.Player.PosY), new Point(map.Enemy.PosX, map.Enemy.PosY));
         }
 
         [Test]
@@ -53,10 +53,10 @@ namespace GetOut.Models.Tests
                 "e     #____________\n" +
                 "  ____#____________\n" +
                 "______#_____ f__f__\n" +
-                "______#_______P____\n", null);
+                "______#_______P____\n");
             for (var i = 0; i < 15; i++)
-                map.enemy.MoveTo(new Point(map.Player.PosX, map.Player.PosY), map);
-            Assert.AreEqual(new Point(0, 0), new Point(map.enemy.PosX, map.enemy.PosY));
+                map.Enemy.MoveTo(new Point(map.Player.PosX, map.Player.PosY), map);
+            Assert.AreEqual(new Point(0, 0), new Point(map.Enemy.PosX, map.Enemy.PosY));
         }
 
         [Test]
@@ -80,10 +80,10 @@ namespace GetOut.Models.Tests
                 "      #            \n" +
                 "      #            \n" +
                 "      #            \n" +
-                "      #            ", null);
+                "      #            ");
             for (var i = 0; i < 15; i++)
-                map.enemy.MoveTo(new Point(map.Player.PosX, map.Player.PosY), map);
-            Assert.AreEqual(new Point(map.Player.PosX, map.Player.PosY), new Point(map.enemy.PosX, map.enemy.PosY));
+                map.Enemy.MoveTo(new Point(map.Player.PosX, map.Player.PosY), map);
+            Assert.AreEqual(new Point(map.Player.PosX, map.Player.PosY), new Point(map.Enemy.PosX, map.Enemy.PosY));
         }
     }
 }

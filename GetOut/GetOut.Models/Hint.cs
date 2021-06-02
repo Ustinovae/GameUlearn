@@ -9,12 +9,9 @@ namespace GetOut.Models
     {
         private bool IsACtive = false;
         
-        public Hint(int posX, int posY, Size size, Image sprite, string name) : base(posX, posY, size, name)
+        public Hint(int posX, int posY, Size size, string name) : base(posX, posY, size, name)
         {
-            Sprite = sprite;
         }
-
-        public Image Sprite { get; }
 
         public bool GetStatus() =>
             IsACtive;

@@ -10,7 +10,7 @@ namespace GetOut.Models.Tests
         public void MovePlayer()
         {
             var player = new Player(0, 0, 30, 60, "Player");
-            var map = GameMap.ParseFromText("P__\n___\n___", null);
+            var map = GameMap.ParseFromText("P__\n___\n___");
             player.StartMove(1, 0);
             player.Act(map);
             player.StopMove();
@@ -20,7 +20,7 @@ namespace GetOut.Models.Tests
         [Test]
         public void DontMove()
         {
-            var map = GameMap.ParseFromText("Pf_\n___\n___", null);
+            var map = GameMap.ParseFromText("Pf_\n___\n___");
             var player = map.Player;
             player.TakeAnFurniture(map);
             player.StartMove(1, 0);
@@ -32,7 +32,7 @@ namespace GetOut.Models.Tests
         [Test]
         public void TakeFurniturePlayerWhenDontMove()
         {
-            var map = GameMap.ParseFromText("Pf_\n___\n___", null);
+            var map = GameMap.ParseFromText("Pf_\n___\n___");
             var player = map.Player;
             player.TakeAnFurniture(map);
             player.StartMove(1, 0);
@@ -44,7 +44,7 @@ namespace GetOut.Models.Tests
         [Test]
         public void TakeFurniturePlayer()
         {
-            var map = GameMap.ParseFromText("P__\n_f_\n___", null);
+            var map = GameMap.ParseFromText("P__\n_f_\n___");
             var player = map.Player;
             player.TakeAnFurniture(map);
             player.StartMove(0, 1);
@@ -56,7 +56,7 @@ namespace GetOut.Models.Tests
         [Test]
         public void ReleaseFurniturePlayer()
         {
-            var map = GameMap.ParseFromText("P__\n_f_\n___", null);
+            var map = GameMap.ParseFromText("P__\n_f_\n___");
             var player = map.Player;
             player.TakeAnFurniture(map);
             player.ReleaseObject();

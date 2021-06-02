@@ -10,7 +10,7 @@ namespace GetOut.Models
     {
         public Level currentLevel;
 
-        public Dictionary<int, Level> Levels = new Dictionary<int, Level>
+        public Dictionary<int, Level> Levels = new()
         {
             { 0, new Level(Properties.Resources.Level1, 0, 
                 new List<string>{ "EntitySprites\\Hint3.png", "EntitySprites\\Hint5.png", "EntitySprites\\Hint.png", "EntitySprites\\exit.png", "EntitySprites\\Hint4.png"}) },
@@ -31,12 +31,12 @@ namespace GetOut.Models
         public GameMap ChangeLevel(int Level)
         {
             currentLevel = Levels[Level];
-            return GameMap.ParseFromText(currentLevel.Map, currentLevel.PathsToHints);
+            return GameMap.ParseFromText(currentLevel.Map);
         }
 
         public GameMap Restart()
         {
-            return GameMap.ParseFromText(currentLevel.Map, currentLevel.PathsToHints);
+            return GameMap.ParseFromText(currentLevel.Map);
         }
     }
 }

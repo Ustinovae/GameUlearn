@@ -53,13 +53,13 @@ namespace GetOut.WinForm
         {
             Flip = false;
             StartPosition = FormStartPosition.Manual;
-            this.Width = GameMap.CellSize * GameMap.MapWidth;
-            this.Height = GameMap.CellSize * GameMap.MapHeight+40;
+            Width = GameMap.CellSize * GameMap.MapWidth;
+            Height = GameMap.CellSize * GameMap.MapHeight+40;
             player = map.Player;
-            this.BackgroundImage = Properties.Resources.BackGround;
+            BackgroundImage = Properties.Resources.BackGround;
             SetAnimationConfiguration(0);
             currentLimit = 4;
-            enemy = map.enemy;
+            enemy = map.Enemy;
 
             updateTimer.Start();
         }
@@ -119,15 +119,19 @@ namespace GetOut.WinForm
         {
             var panel = new Panel();
 
-            var text = new Label();
-            text.Text = "Вау, ты выйграл! Сыграем дальше?";
-            text.Size = new Size(panel.Width, panel.Height / 3);
-            text.Location = new Point(0, panel.Height / 3);
-            text.AutoSize = false;
+            var text = new Label
+            {
+                Text = "Вау, ты выйграл! Сыграем дальше?",
+                Size = new Size(panel.Width, panel.Height / 3),
+                Location = new Point(0, panel.Height / 3),
+                AutoSize = false
+            };
 
-            var button = new Button();
-            button.Text = "Next Level";
-            button.Location = new Point(0, panel.Height * 2 / 3);
+            var button = new Button
+            {
+                Text = "Next Level",
+                Location = new Point(0, panel.Height * 2 / 3)
+            };
             button.Click += (s, e) =>
             {
                 map = levelsManager.GetNextLevel();
@@ -144,15 +148,19 @@ namespace GetOut.WinForm
         {
             SetAnimationConfiguration(8);
             var panel = new Panel();
-            var text = new Label();
-            text.Text = "К сожалению ты проиграл. Может попробуешь еще раз?";
-            text.Size = new Size(panel.Width, panel.Height / 3);
-            text.Location = new Point(0, panel.Height / 3);
-            text.AutoSize = false;
+            var text = new Label
+            {
+                Text = "К сожалению ты проиграл. Может попробуешь еще раз?",
+                Size = new Size(panel.Width, panel.Height / 3),
+                Location = new Point(0, panel.Height / 3),
+                AutoSize = false
+            };
 
-            var button = new Button();
-            button.Text = "Restart";
-            button.Location = new Point(0, panel.Height * 2 / 3);
+            var button = new Button
+            {
+                Text = "Restart",
+                Location = new Point(0, panel.Height * 2 / 3)
+            };
             button.Click += (s, e) =>
             {
                 map = levelsManager.ChangeLevel(levelsManager.currentLevel.NumberLevel);
@@ -208,12 +216,20 @@ namespace GetOut.WinForm
                 }
             }
 
-            foreach (var hint in map.HintOnLevels)
-            {
-                if (hint.GetStatus())
-                    g.DrawImage(hint.Sprite, new Point(hint.PosX, hint.PosY));
-            }
+            DrawHint(g);
             DrawPlayer(g);
+        }
+
+        private void DrawHint(Graphics g)
+        {
+            for(var i = 0; i < map.HintOnLevels.Count; i++)
+            {
+                if (map.HintOnLevels[i].GetStatus())
+                {
+                    var image = new Bitmap(Path.Combine(new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.Parent.Parent.ToString(), levelsManager.currentLevel.PathsToHints[i]));
+                    g.DrawImage(image, new Point(map.HintOnLevels[i].PosX, map.HintOnLevels[i].PosY));
+                }
+            }
         }
 
         private void DrawPlayer(Graphics g)

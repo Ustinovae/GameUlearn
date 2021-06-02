@@ -12,8 +12,8 @@ namespace GetOut.WinForm
 {
     public partial class Menu : Form
     {
-        public Button startButton;
-        public Panel mainPanel;
+        private readonly Button startButton;
+        private readonly Panel mainPanel;
 
         public Menu()
         {
@@ -25,11 +25,13 @@ namespace GetOut.WinForm
             Height = 645;
             BackColor = Color.FromArgb(221, 183, 48);
 
-            startButton = new Button();
-            startButton.Text = "Let's Go";
-            startButton.Size = new Size(300, 200);
-            startButton.AutoSize = false;
-            startButton.Location = new Point(250, 150);
+            startButton = new Button
+            {
+                Text = "Let's Go",
+                Size = new Size(300, 200),
+                AutoSize = false,
+                Location = new Point(250, 150)
+            };
             startButton.Font = new Font(startButton.Name, 32f, startButton.Font.Style);
             startButton.Click += StartButton_Click;
 
