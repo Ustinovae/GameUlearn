@@ -8,15 +8,18 @@ namespace GetOut.Models
 {
     public class Level
     {
-        public Level(string map, int numberLevel, List<string> pathsToHints)
+        public Level(string map, int numberLevel, List<string> hintsText, string password)
         {
             Map = map;
             NumberLevel = numberLevel;
-            PathsToHints = pathsToHints;
+            HintsText = hintsText;
+            Password = password;
+            
         }
 
         public int NumberLevel { get; }
         public string Map { get; }
-        public List<string> PathsToHints { get; }
+        public List<string> HintsText { get; }
+        public string Password { get; }
     }
 }

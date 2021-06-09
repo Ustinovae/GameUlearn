@@ -12,10 +12,21 @@ namespace GetOut.Models
 
         public Dictionary<int, Level> Levels = new()
         {
-            { 0, new Level(Properties.Resources.Level1, 0, 
-                new List<string>{ "EntitySprites\\Hint3.png", "EntitySprites\\Hint5.png", "EntitySprites\\Hint.png", "EntitySprites\\exit.png", "EntitySprites\\Hint4.png"}) },
-            { 1, new Level(Properties.Resources.Level2, 1,
-                new List<string>{ "EntitySprites\\exit.png","EntitySprites\\Hint21.png"}) }
+            {
+                0,
+                new Level(Properties.Resources.FirstLevel, 0,
+                new List<string> { "Чтобы выбратся тебе нужно узнать пароль и ввести его. Поищи еще записки",
+                    "На карте есть ящики. Ты можешь их двигать на T хватаешь, на R отпускать",
+                    "За углом находятся враги. Если подойдешь близко они погонятся за тобой. Если догонят, то ты проиграл",
+                    "Управление WSAD. Если отойдешь от подсказкиона исчезнет. На карте есть ещё записки. Почитай их" },
+                "Конь")},
+            { 1, new Level(Properties.Resources.SecondLevel, 0, 
+                new List<string>{ "Враг", "Пока", "Привет", "че по чем", "хз"},
+                "Конь")
+            },
+            { 2, new Level(Properties.Resources.Level2, 1,
+                new List<string>{ "EntitySprites\\exit.png","EntitySprites\\Hint21.png"},
+                "ПАРИ") }
         };
 
         public GameMap GetNextLevel()
@@ -31,12 +42,15 @@ namespace GetOut.Models
         public GameMap ChangeLevel(int Level)
         {
             currentLevel = Levels[Level];
-            return GameMap.ParseFromText(currentLevel.Map);
+            return GameMap.ParseFromText(currentLevel.Map, currentLevel.HintsText, currentLevel.Password);
         }
 
         public GameMap Restart()
         {
-            return GameMap.ParseFromText(currentLevel.Map);
+            return GameMap.ParseFromText(currentLevel.Map, currentLevel.HintsText, currentLevel.Password);
         }
     }
 }
+//{
+    //0, new Level(Properties.Resources.Level1, 0,
+                  //new List<string> { "EntitySprites\\Hint3.png", "EntitySprites\\Hint5.png", "EntitySprites\\Hint.png", "EntitySprites\\exit.png", "EntitySprites\\Hint4.png" })

@@ -103,6 +103,26 @@ namespace GetOut.WinForm.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap EnemyAnimation {
+            get {
+                object obj = ResourceManager.GetObject("EnemyAnimation", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap exit {
+            get {
+                object obj = ResourceManager.GetObject("exit", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Himt2 {
             get {
                 object obj = ResourceManager.GetObject("Himt2", resourceCulture);
@@ -123,6 +143,16 @@ namespace GetOut.WinForm.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap note {
+            get {
+                object obj = ResourceManager.GetObject("note", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Plyer3_0 {
             get {
                 object obj = ResourceManager.GetObject("Plyer3_0", resourceCulture);
@@ -131,30 +161,12 @@ namespace GetOut.WinForm.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to e_____#____________
-        ///______#____________
-        ///______#_____f__hf__
-        ///______#____________
-        ///______#            
-        ///      #            
-        ///      #    #       
-        ///###  ##    ########
-        ///                   
-        ///    f              
-        ///                   
-        ///                   
-        ///###f ## h          
-        ///      #            
-        ///      #            
-        ///      #            
-        ///      #            
-        ///      #            
-        ///      #            
-        ///      #   p        .
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static string TextFile1 {
+        internal static System.Drawing.Bitmap read {
             get {
-                return ResourceManager.GetString("TextFile1", resourceCulture);
+                object obj = ResourceManager.GetObject("read", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

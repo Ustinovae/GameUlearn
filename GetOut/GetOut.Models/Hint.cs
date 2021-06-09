@@ -9,9 +9,12 @@ namespace GetOut.Models
     {
         private bool IsACtive = false;
         
-        public Hint(int posX, int posY, Size size, string name) : base(posX, posY, size, name)
+        public Hint(int posX, int posY, Size size, string name, string text) : base(posX, posY, size, name)
         {
+            Text = text;
         }
+
+        public string Text { get; }
 
         public bool GetStatus() =>
             IsACtive;

@@ -10,7 +10,7 @@ namespace GetOut.Models
     {
         public const int CellSize = 30;
 
-        private GameMap(List<Entity> entitiesOnMap, List<Hint> hintOnLevels, int indexEnemy, int mapHeight, int mapWidth, Point winPos, Player player)
+        private GameMap(List<Entity> entitiesOnMap, List<Hint> hintOnLevels, List<Enemy> enemisOnMap, int mapHeight, int mapWidth, Exit exit, Player player)
         {
             MapHeight = mapHeight;
             MapWidth = mapWidth;
@@ -18,37 +18,37 @@ namespace GetOut.Models
             Lose = false;
             EntitiesOnMap = entitiesOnMap;
             HintOnLevels = hintOnLevels;
-            WinPos = winPos;
+            Exit = exit;
             Player = player;
-            if (indexEnemy != -1)
-                Enemy = (Enemy)entitiesOnMap[indexEnemy];
+            EnemisOnMap = enemisOnMap;
         }
 
         public static int MapHeight { get; set; }
         public static int MapWidth { get; set; }
         public List<Entity> EntitiesOnMap { get; set; }
         public List<Hint> HintOnLevels { get; set; }
+        public List<Enemy> EnemisOnMap { get; set; }
 
         public Player Player { get; set; }
         public Enemy Enemy { get; set; }
-        private Point WinPos { get; }
+        public Exit Exit { get; }
 
         public bool Win { get; set; }
         public bool Lose { get; set; }
 
-        public static GameMap ParseFromText(string text)
+        public static GameMap ParseFromText(string text, List<string> hintsText, string password)
         {
             var lines = text.Split('\n');
-            return FromLines(lines);
+            return FromLines(lines, hintsText, password);
         }
 
-        public static GameMap FromLines(string[] lines)
+        public static GameMap FromLines(string[] lines, List<string> hintsText, string password)
         {
             Player player = null;
-            var indexEnemy = -1;
-            var winPos = new Point(int.MinValue, int.MinValue);
+            Exit exit = null;
             var entitiesOnMap = new List<Entity>();
             var hintOnLevels = new List<Hint>();
+            var enimisOnMap = new List<Enemy>();
             for (var y = 0; y< lines.Length; y++)
             {
                 for (var x = 0; x < lines[y].Length; x++)
@@ -62,32 +62,32 @@ namespace GetOut.Models
                             entitiesOnMap.Add(new Furniture(x * CellSize, y * CellSize, new Size(CellSize, CellSize), "Furniture"));
                             break;
                         case 'h':
-                            hintOnLevels.Add(new Hint(x * CellSize, y * CellSize, new Size(3 * CellSize, 3 * CellSize), "Hint"));
+                            hintOnLevels.Add(new Hint(x * CellSize, y * CellSize, new Size( CellSize, CellSize), "Hint", hintsText[hintOnLevels.Count]));
                             break;
                         case 'e':
-                            indexEnemy = entitiesOnMap.Count;
-                            entitiesOnMap.Add(new Enemy(x * CellSize, y * CellSize, CellSize, 2 * CellSize, "Enemy"));
+                            enimisOnMap.Add(new Enemy(x * CellSize, y * CellSize, CellSize, 2 * CellSize, "Enemy"));
+                            //entitiesOnMap.Add(new Enemy(x * CellSize, y * CellSize, CellSize, 2 * CellSize, "Enemy"));
                             break;
-                        case 'P':
+                        case 'p':
                             player = new Player(x * CellSize, y * CellSize, CellSize, 2 * CellSize, "Player");
                             break;
                         case 'w':
-                            winPos.X = x * CellSize;
-                            winPos.Y = y * CellSize;
+                            exit = new Exit(x * CellSize, y * CellSize, CellSize, CellSize, "Exit", password);
                             break;
                     }
                 }
             }
-            return new GameMap(entitiesOnMap, hintOnLevels, indexEnemy, lines.Length, lines[1].Length, winPos, player);
+            return new GameMap(entitiesOnMap, hintOnLevels, enimisOnMap, lines.Length, lines[1].Length, exit, player);
         }
 
         public bool CheckWin()
         {
-            return Player.PosX + Player.Size.Width > WinPos.X &&
-                    Player.PosX < WinPos.X + CellSize &&
-                    Player.PosY + Player.Size.Height > WinPos.Y &&
-                    Player.PosY < WinPos.Y + 2 * CellSize;
-                
+            Win = Player.PosX + Player.Size.Width > Exit.PosX &&
+                    Player.PosX < Exit.PosX + CellSize &&
+                    Player.PosY + Player.Size.Height > Exit.PosY &&
+                    Player.PosY < Exit.PosY + 2 * CellSize;
+            return Win;
+
         }
 
         public bool IsCollide(Entity entity, Point nextPoint)

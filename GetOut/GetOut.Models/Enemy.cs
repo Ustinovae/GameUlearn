@@ -8,13 +8,22 @@ namespace GetOut.Models
 {
     public class Enemy : Entity
     {
+        public int CurrentAnimation { get; set; }
+        public int CurrentLimit { get; set; }
+        public int CurrentFrame { get; set; }
+        public bool Flip { get; set; }
+
+
         private readonly Point[] vectors = new Point[] {
             new Point(10, 0), new Point(0, 10),
             new Point(-10, 0), new Point(0, -10) };
 
+        private int baseDir = 5;
+
         public Enemy(int posX, int posY, int width, int height, string name)
             : base(posX, posY, new Size(width, height), name)
         {
+            CurrentLimit = 7;
         }
 
         public void MoveTo(Point target, GameMap map)
@@ -25,8 +34,47 @@ namespace GetOut.Models
             if (pathToTarget != null)
             {
                 var pathInDir = ParseToDirection(pathToTarget).FirstOrDefault();
+                if (pathInDir.X > 0)
+                    Flip = true;
+                else if (pathInDir.X < 0)
+                    Flip = false;
+                if (pathInDir.X != 0 || pathInDir.Y != 0)
+                    SetAnimationConfiguration("Run");
+                else
+                    SetAnimationConfiguration("State");
                 PosX += pathInDir.X;
                 PosY += pathInDir.Y;
+            }
+            //else
+            //{
+            //    if (map.IsCollide(this, new Point(PosX + baseDir, PosY)))
+            //        baseDir *= -1;
+            //    PosX += baseDir;
+            //}
+        }
+
+        public void SetAnimationConfiguration(string animation)
+        {
+            if (animation == "State" && !Flip)
+                CurrentAnimation = 0;
+            else if (animation == "State" && Flip)
+                CurrentAnimation = 0;
+            else if (animation == "Run" && !Flip)
+                CurrentAnimation = 1;
+            else if (animation == "Run" && Flip)
+                CurrentAnimation = 1;
+
+            switch (animation)
+            {
+                case "State":
+                    CurrentLimit = 7;
+                    break;
+                case "Run":
+                    CurrentLimit = 7;
+                    break;
+                case "Deth":
+                    CurrentLimit = 1;
+                    break;
             }
         }
 
@@ -42,7 +90,7 @@ namespace GetOut.Models
             while (queue.Count > 0)
             {
                 var point = queue.Dequeue();
-                if (map.IsCollide(this, point))
+                if (map.IsCollide(this, point) || ways[point].Length > 20)
                     continue;
 
                 foreach (var vector in vectors)
@@ -71,14 +119,16 @@ namespace GetOut.Models
 
         internal class SinglyLinkedList<T> : IEnumerable<T>
         {
+            public readonly T Value;
+            public readonly SinglyLinkedList<T> Previous;
+            public readonly int Length;
+
             public SinglyLinkedList(T value, SinglyLinkedList<T> previous = null)
             {
                 Value = value;
                 Previous = previous;
+                Length = previous?.Length + 1 ?? 1;
             }
-
-            public T Value { get; }
-            public SinglyLinkedList<T> Previous { get; }
 
             public IEnumerator<T> GetEnumerator()
             {
