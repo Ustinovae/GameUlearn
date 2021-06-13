@@ -5,10 +5,10 @@ using System.Linq;
 
 namespace GetOut.Models
 {
-    public class Hint: Entity
+    public class Hint : Entity
     {
         private bool IsACtive = false;
-        
+
         public Hint(int posX, int posY, Size size, string name, string text) : base(posX, posY, size, name)
         {
             Text = text;

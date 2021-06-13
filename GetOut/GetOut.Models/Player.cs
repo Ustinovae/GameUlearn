@@ -8,19 +8,19 @@ namespace GetOut.Models
     public class Player : Entity
     {
         private Furniture capturedFurniture;
-        public int CurrentAnimation { get; set; }
-        public int CurrentLimit { get; set; }
-        public int CurrentFrame { get; set; }
-        public bool Flip { get; set; }
-
+        private string dirForAnimation;
 
         public Player(int posX, int posY, int width, int height, string name)
             : base(posX, posY, new Size(width, height), name)
         {
             SpeedValue = 10;
             CurrentLimit = 4;
-            Flip = false;
+            dirForAnimation = "down";
         }
+
+        public int CurrentAnimation { get; private set; }
+        public int CurrentLimit { get; private set; }
+        public int CurrentFrame { get; set; }
 
         public int SpeedValue { get; }
 
@@ -31,10 +31,17 @@ namespace GetOut.Models
         {
             DirX = dirX;
             DirY = dirY;
-            if (dirX > 0)
-                Flip = false;
-            else if (dirX < 0)
-                Flip = true;
+            if (capturedFurniture == null)
+            {
+                if (dirX > 0)
+                    dirForAnimation = "right";
+                else if (dirX < 0)
+                    dirForAnimation = "left";
+                else if (dirY > 0)
+                    dirForAnimation = "down";
+                else if (dirY < 0)
+                    dirForAnimation = "up";
+            }
         }
 
         public void StopMove()
@@ -49,21 +56,16 @@ namespace GetOut.Models
         public void TakeAnFurniture(GameMap map) =>
             capturedFurniture = (Furniture)map.CheckContactWithObject(this, "Furniture");
 
-        public void ReleaseObject()=>    
+        public void ReleaseObject() =>
             capturedFurniture = null;
-        
+
         public void Act(GameMap map)
         {
-            if(!map.IsCollide(this, new Point(PosX+DirX*SpeedValue, PosY + DirY * SpeedValue)))
+            if (!map.IsCollide(this, new Point(PosX + DirX * SpeedValue, PosY + DirY * SpeedValue)))
             {
                 if (capturedFurniture != null)
                     capturedFurniture.Move(DirX * SpeedValue, DirY * SpeedValue, map);
-                if (capturedFurniture != null && !capturedFurniture.CheckCollide())
-                {
-                    PosX += DirX * SpeedValue;// / 2;
-                    PosY += DirY * SpeedValue;// / 2;
-                }
-                else if (capturedFurniture == null)
+                if (capturedFurniture != null && !capturedFurniture.CheckCollide() || capturedFurniture == null)
                 {
                     PosX += DirX * SpeedValue;
                     PosY += DirY * SpeedValue;
@@ -71,70 +73,42 @@ namespace GetOut.Models
             }
         }
 
-        public void SetAnimationConfiguration(int currentAnimation)
-        {
-            if (currentAnimation == 0 && TakeStatus())
-                CurrentAnimation = 6;
-            else if (currentAnimation == 1 && TakeStatus())
-                CurrentAnimation = 7;
-            else if (currentAnimation == 2 && TakeStatus())
-                CurrentAnimation = 4;
-            else if (currentAnimation == 3 && TakeStatus())
-                CurrentAnimation = 5;
-            else
-                CurrentAnimation = currentAnimation;
-
-            switch (currentAnimation)
-            {
-                case 0:
-                    CurrentLimit = 4;
-                    break;
-                case 1:
-                    CurrentLimit = 4;
-                    break;
-                case 2:
-                    CurrentLimit = 6;
-                    break;
-                case 3:
-                    CurrentLimit = 6;
-                    break;
-                case 8:
-                    CurrentLimit = 1;
-                    break;
-            }
-        }
-
         public void SetAnimationConfiguration(string animation)
         {
-            if (animation == "State" && TakeStatus() && !Flip)
-                CurrentAnimation = 6;
-            else if (animation == "State" && TakeStatus() && Flip)
-                CurrentAnimation = 7;
-            else if (animation == "Run" && TakeStatus() && !Flip)
-                CurrentAnimation = 4;
-            else if (animation == "Run" && TakeStatus() && Flip)
-                CurrentAnimation = 5;
-            else if (animation == "State" && !Flip)
-                CurrentAnimation = 0;
-            else if (animation == "State" && Flip)
-                CurrentAnimation = 1;
-            else if (animation == "Run" && !Flip)
-                CurrentAnimation = 2;
-            else if (animation == "Run" && Flip)
-                CurrentAnimation = 3;
 
-            switch (animation)
+            if (capturedFurniture != null)
             {
-                case "State":
-                    CurrentLimit = 4;
+                if (PosX + Size.Width == capturedFurniture.PosX)
+                    dirForAnimation = "right";
+                else if (PosX == capturedFurniture.PosX + capturedFurniture.Size.Width)
+                    dirForAnimation = "left";
+                else if (PosY == capturedFurniture.PosY + capturedFurniture.Size.Height)
+                    dirForAnimation = "up";
+                else if (PosY + Size.Height == capturedFurniture.PosY)
+                    dirForAnimation = "down";
+            }
+            switch (dirForAnimation)
+            {
+                case "up":
+                    CurrentAnimation = 0;
                     break;
-                case "Run":
-                    CurrentLimit = 6;
+                case "left":
+                    CurrentAnimation = 1;
                     break;
-                case "Deth":
-                    CurrentLimit = 1;
+                case "down":
+                    CurrentAnimation = 2;
+                    break;
+                case "right":
+                    CurrentAnimation = 3;
                     break;
             }
+            if (TakeStatus())
+                CurrentAnimation += 8;
+            else if (animation == "Run")
+                CurrentAnimation += 4;
+            else if (animation == "State")
+                CurrentAnimation += 0;
+            CurrentLimit = 4;
         }
     }
 }

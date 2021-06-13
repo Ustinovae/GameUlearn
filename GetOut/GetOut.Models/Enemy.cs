@@ -8,23 +8,24 @@ namespace GetOut.Models
 {
     public class Enemy : Entity
     {
-        public int CurrentAnimation { get; set; }
-        public int CurrentLimit { get; set; }
-        public int CurrentFrame { get; set; }
-        public bool Flip { get; set; }
-
-
         private readonly Point[] vectors = new Point[] {
             new Point(10, 0), new Point(0, 10),
             new Point(-10, 0), new Point(0, -10) };
 
         private int baseDir = 5;
+        private int pause = 10;
+        private int lenghtWay;
 
         public Enemy(int posX, int posY, int width, int height, string name)
             : base(posX, posY, new Size(width, height), name)
         {
             CurrentLimit = 7;
         }
+
+        public int CurrentAnimation { get; private set; }
+        public int CurrentLimit { get; private set; }
+        public int CurrentFrame { get; set; }
+        private bool flip;
 
         public void MoveTo(Point target, GameMap map)
         {
@@ -34,10 +35,10 @@ namespace GetOut.Models
             if (pathToTarget != null)
             {
                 var pathInDir = ParseToDirection(pathToTarget).FirstOrDefault();
-                if (pathInDir.X > 0)
-                    Flip = true;
-                else if (pathInDir.X < 0)
-                    Flip = false;
+                if (pathInDir.X < 0)
+                    flip = true;
+                else if (pathInDir.X > 0)
+                    flip = false;
                 if (pathInDir.X != 0 || pathInDir.Y != 0)
                     SetAnimationConfiguration("Run");
                 else
@@ -45,24 +46,38 @@ namespace GetOut.Models
                 PosX += pathInDir.X;
                 PosY += pathInDir.Y;
             }
-            //else
-            //{
-            //    if (map.IsCollide(this, new Point(PosX + baseDir, PosY)))
-            //        baseDir *= -1;
-            //    PosX += baseDir;
-            //}
+            else
+            {
+                if (pause != 0)
+                {
+                    SetAnimationConfiguration("State");
+                    pause--;
+                }
+                else
+                {
+                    PosX += baseDir;
+                    lenghtWay += baseDir;
+                    flip = baseDir < 0;
+                    SetAnimationConfiguration("Run");
+                    if (map.IsCollide(this, new Point(PosX + baseDir, PosY)) || Math.Abs(lenghtWay) >= 100)
+                    {
+                        pause = 10;
+                        baseDir *= -1;
+                    }
+                }
+            }
         }
 
         public void SetAnimationConfiguration(string animation)
         {
-            if (animation == "State" && !Flip)
+            if (animation == "State" && !flip)
                 CurrentAnimation = 0;
-            else if (animation == "State" && Flip)
-                CurrentAnimation = 0;
-            else if (animation == "Run" && !Flip)
+            else if (animation == "State" && flip)
                 CurrentAnimation = 1;
-            else if (animation == "Run" && Flip)
-                CurrentAnimation = 1;
+            else if (animation == "Run" && !flip)
+                CurrentAnimation = 2;
+            else if (animation == "Run" && flip)
+                CurrentAnimation = 3;
 
             switch (animation)
             {

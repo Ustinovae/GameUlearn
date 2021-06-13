@@ -14,7 +14,7 @@ namespace GetOut.Models
             NumberLevel = numberLevel;
             HintsText = hintsText;
             Password = password;
-            
+
         }
 
         public int NumberLevel { get; }

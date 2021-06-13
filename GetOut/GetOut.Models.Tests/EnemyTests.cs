@@ -12,25 +12,26 @@ namespace GetOut.Models.Tests
         [Test]
         public void WithoutObjOnMap()
         {
-            var map = GameMap.ParseFromText("e  \n   \n   ");
-            map.Enemy.MoveTo(new Point(1 * GameMap.CellSize, 1 * GameMap.CellSize), map);
-            Assert.AreEqual(10, map.Enemy.PosX);
+            var map = GameMap.ParseFromText("e  \n   \n   ", null, null);
+            
+            map.EnemisOnMap[0].MoveTo(new Point(1 * GameMap.CellSize, 1 * GameMap.CellSize), map);
+            Assert.AreEqual(10, map.EnemisOnMap[0].PosX);
         }
 
         [Test]
         public void WhenNoPath()
         {
-            var map = GameMap.ParseFromText("e##\n## \n   ");
-            map.Enemy.MoveTo(new Point(2 * GameMap.CellSize, 2 * GameMap.CellSize), map);
-            Assert.AreEqual(0, map.Enemy.PosY);
+            var map = GameMap.ParseFromText("e##\n## \n   ", null, null);
+            map.EnemisOnMap[0].MoveTo(new Point(2 * GameMap.CellSize, 2 * GameMap.CellSize), map);
+            Assert.AreEqual(0, map.EnemisOnMap[0].PosY);
         }
 
         [Test]
         public void WhenNoPathWithoutObjOnMap()
         {
-            var map = GameMap.ParseFromText("e__\n___\n___");
-            map.Enemy.MoveTo(new Point(1 * GameMap.CellSize, 1 * GameMap.CellSize), map);
-            Assert.AreEqual(10, map.Enemy.PosX);
+            var map = GameMap.ParseFromText("e__\n___\n___", null, null);
+            map.EnemisOnMap[0].MoveTo(new Point(1 * GameMap.CellSize, 1 * GameMap.CellSize), map);
+            Assert.AreEqual(10, map.EnemisOnMap[0].PosX);
         }
 
         [Test]
@@ -39,11 +40,11 @@ namespace GetOut.Models.Tests
             var map = GameMap.ParseFromText(
                 "e     #____________\n" +
                 "  _________________\n" +
-                "__________P_ f__f__\n" +
-                "______#____________\n");
+                "__________p_ f__f__\n" +
+                "______#____________\n", null, null);
             for (var i = 0; i < 36; i++)
-                map.Enemy.MoveTo(new Point(map.Player.PosX, map.Player.PosY), map);
-            Assert.AreEqual(new Point(map.Player.PosX, map.Player.PosY), new Point(map.Enemy.PosX, map.Enemy.PosY));
+                map.EnemisOnMap[0].MoveTo(new Point(map.Player.PosX, map.Player.PosY), map);
+            Assert.AreEqual(new Point(100, 0), new Point(map.EnemisOnMap[0].PosX, map.EnemisOnMap[0].PosY));
         }
 
         [Test]
@@ -53,10 +54,10 @@ namespace GetOut.Models.Tests
                 "e     #____________\n" +
                 "  ____#____________\n" +
                 "______#_____ f__f__\n" +
-                "______#_______P____\n");
+                "______#_______p____\n", null, null);
             for (var i = 0; i < 15; i++)
-                map.Enemy.MoveTo(new Point(map.Player.PosX, map.Player.PosY), map);
-            Assert.AreEqual(new Point(0, 0), new Point(map.Enemy.PosX, map.Enemy.PosY));
+                map.EnemisOnMap[0].MoveTo(new Point(map.Player.PosX, map.Player.PosY), map);
+            Assert.AreEqual(new Point(25, 0), new Point(map.EnemisOnMap[0].PosX, map.EnemisOnMap[0].PosY));
         }
 
         [Test]
@@ -64,7 +65,7 @@ namespace GetOut.Models.Tests
         {
             var map = GameMap.ParseFromText(
                 "e     #____________\n" +
-                "  P___#____________\n" +
+                "  p___#____________\n" +
                 "______#_____ f__f__\n" +
                 "______#____________\n" +
                 "______#            \n" +
@@ -80,10 +81,10 @@ namespace GetOut.Models.Tests
                 "      #            \n" +
                 "      #            \n" +
                 "      #            \n" +
-                "      #            ");
+                "      #            ", null, null);
             for (var i = 0; i < 15; i++)
-                map.Enemy.MoveTo(new Point(map.Player.PosX, map.Player.PosY), map);
-            Assert.AreEqual(new Point(map.Player.PosX, map.Player.PosY), new Point(map.Enemy.PosX, map.Enemy.PosY));
+                map.EnemisOnMap[0].MoveTo(new Point(map.Player.PosX, map.Player.PosY), map);
+            Assert.AreEqual(new Point(map.Player.PosX, map.Player.PosY), new Point(map.EnemisOnMap[0].PosX, map.EnemisOnMap[0].PosY));
         }
     }
 }

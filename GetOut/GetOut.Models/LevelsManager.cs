@@ -8,49 +8,57 @@ namespace GetOut.Models
 {
     public class LevelsManager
     {
-        public Level currentLevel;
+        public Level CurrentLevel { get; private set; }
 
-        public Dictionary<int, Level> Levels = new()
+        private readonly Dictionary<int, Level> levels = new()
         {
             {
                 0,
                 new Level(Properties.Resources.FirstLevel, 0,
-                new List<string> { "Чтобы выбратся тебе нужно узнать пароль и ввести его. Поищи еще записки",
-                    "На карте есть ящики. Ты можешь их двигать на T хватаешь, на R отпускать",
+                new List<string> { "Пароль на сегодня: алло",
+                    "Чтобы выбратся тебе нужно узнать пароль и ввести его. Поищи еще записки",
+                    "На карте есть ящики. Ты можешь их двигать. на F хватаешь, на R отпускать",
                     "За углом находятся враги. Если подойдешь близко они погонятся за тобой. Если догонят, то ты проиграл",
-                    "Управление WSAD. Если отойдешь от подсказкиона исчезнет. На карте есть ещё записки. Почитай их" },
-                "Конь")},
-            { 1, new Level(Properties.Resources.SecondLevel, 0, 
-                new List<string>{ "Враг", "Пока", "Привет", "че по чем", "хз"},
-                "Конь")
+                    "Управление WSAD. Если отойдешь от подсказки, она исчезнет. На карте есть ещё записки. Почитай их" },
+                "алло")
             },
-            { 2, new Level(Properties.Resources.Level2, 1,
-                new List<string>{ "EntitySprites\\exit.png","EntitySprites\\Hint21.png"},
-                "ПАРИ") }
+            {
+                1,
+                new Level(Properties.Resources.SecondLevel, 0,
+                new List<string>{
+                    "               Книга Шифрования \n" +
+                    "Шифр Цезаря — это вид шифра подстановки, в котором каждый \n" +
+                    "символ в открытом тексте заменяется символом, находящимся \n" +
+                    "на некотором постоянном числе позиций левее или правее него \n" +
+                    " в алфавите. Например, в шифре со сдвигом вправо на 3, \n" +
+                    "А была бы заменена на Г, Б станет Д, и так далее.",
+                    "Алфавит:\nА Б В Г Д Е Ё Ж\nЗ И Й К Л М Н О\nП Р С Т У Ф Х Ц\nЧ Ш Щ Ъ Ы Ь Э Ю\nЯ",
+                    "Дата: 10.06.2021 (чт)\nВремя 17:29\nИнформация для охранников: смена шифрования\nСпособ шифрования: Код Цезаря\nСлово для шифрования: щлнгжг",
+                    "Новое расписание:\nПн Вт Ср Чт Пт Сб Вс\n+7 -9 +5 +1 -3 +4 -6",
+                    "Поставка груза завтра, в субботу в 10:00"},
+                "цикада")
+            },
         };
 
         public GameMap GetNextLevel()
         {
-            if (currentLevel == null)
+            if (CurrentLevel == null)
                 return ChangeLevel(0);
-            var num = currentLevel.NumberLevel + 1;
-            if (!Levels.ContainsKey(num))
+            var num = CurrentLevel.NumberLevel + 1;
+            if (!levels.ContainsKey(num))
                 Restart();
             return ChangeLevel(num);
         }
 
-        public GameMap ChangeLevel(int Level)
-        {
-            currentLevel = Levels[Level];
-            return GameMap.ParseFromText(currentLevel.Map, currentLevel.HintsText, currentLevel.Password);
-        }
-
         public GameMap Restart()
         {
-            return GameMap.ParseFromText(currentLevel.Map, currentLevel.HintsText, currentLevel.Password);
+            return GameMap.ParseFromText(CurrentLevel.Map, CurrentLevel.HintsText, CurrentLevel.Password);
+        }
+
+        private GameMap ChangeLevel(int Level)
+        {
+            CurrentLevel = levels[Level];
+            return GameMap.ParseFromText(CurrentLevel.Map, CurrentLevel.HintsText, CurrentLevel.Password);
         }
     }
 }
-//{
-    //0, new Level(Properties.Resources.Level1, 0,
-                  //new List<string> { "EntitySprites\\Hint3.png", "EntitySprites\\Hint5.png", "EntitySprites\\Hint.png", "EntitySprites\\exit.png", "EntitySprites\\Hint4.png" })

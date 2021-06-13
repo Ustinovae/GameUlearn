@@ -16,9 +16,7 @@ namespace GetOut.Models
             this.password = password;
         }
 
-        public bool CheckPassword(string password)
-        {
-            return this.password == password;
-        }
+        public bool CheckPassword(string password) =>
+            this.password == password;
     }
 }

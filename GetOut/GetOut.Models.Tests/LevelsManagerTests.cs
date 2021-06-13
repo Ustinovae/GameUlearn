@@ -15,7 +15,7 @@ namespace GetOut.Models.Tests
         {
             var levelsManager = new LevelsManager();
             levelsManager.GetNextLevel();
-            Assert.AreEqual(0, levelsManager.currentLevel.NumberLevel);
+            Assert.AreEqual(0, levelsManager.CurrentLevel.NumberLevel);
         }
 
         [Test]
@@ -24,17 +24,7 @@ namespace GetOut.Models.Tests
             var levelsManager = new LevelsManager();
             levelsManager.GetNextLevel();
             levelsManager.Restart();
-            Assert.AreEqual(0, levelsManager.currentLevel.NumberLevel);
-        }
-
-        [Test]
-        public void CheckChangeLevel()
-        {
-            var levelsManager = new LevelsManager();
-            levelsManager.GetNextLevel();
-            levelsManager.GetNextLevel();
-            levelsManager.ChangeLevel(0);
-            Assert.AreEqual(0, levelsManager.currentLevel.NumberLevel);
+            Assert.AreEqual(0, levelsManager.CurrentLevel.NumberLevel);
         }
     }
 }

@@ -17,13 +17,14 @@ namespace GetOut.WinForm
 
         public Menu()
         {
-            StartPosition = FormStartPosition.Manual;
+            StartPosition = FormStartPosition.CenterScreen;
             mainPanel = new Panel();
             mainPanel.ClientSize = new Size(30 * 20, 30 * 20);
             InitializeComponent();
             Width = 815;
             Height = 645;
-            BackColor = Color.FromArgb(221, 183, 48);
+            BackColor = Color.FromArgb(228, 220, 168);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
 
             startButton = new Button
             {

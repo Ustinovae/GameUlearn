@@ -12,14 +12,14 @@ namespace GetOut.Models.Tests
         [Test]
         public void Create()
         {
-            var hint = new Hint(0, 0, new Size(100, 100), "hint");
+            var hint = new Hint(0, 0, new Size(100, 100), "hint", null);
             Assert.IsNotNull(hint);
         }
 
         [Test]
         public void Activate()
         {
-            var hint = new Hint(0, 0, new Size(100, 100), "hint");
+            var hint = new Hint(0, 0, new Size(100, 100), "hint", null);
             hint.SetActive(true);
             Assert.IsTrue(hint.GetStatus());
         }
@@ -27,7 +27,7 @@ namespace GetOut.Models.Tests
         [Test]
         public void Block()
         {
-            var hint = new Hint(0, 0, new Size(100, 100), "hint");
+            var hint = new Hint(0, 0, new Size(100, 100), "hint", null);
             hint.SetActive(true);
             hint.SetActive(false);
             Assert.IsFalse(hint.GetStatus());

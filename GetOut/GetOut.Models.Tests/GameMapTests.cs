@@ -13,35 +13,35 @@ namespace GetOut.Models.Tests
         [Test]
         public void CreateMap()
         {
-            var map = GameMap.ParseFromText("e  \n   \n   ");
+            var map = GameMap.ParseFromText("e  \n   \n   ", null, null);
             Assert.IsNotNull(map);
         }
 
         [Test]
         public void CheckParseText()
         {
-            var map = GameMap.ParseFromText("e##\n___\n___");
-            Assert.AreEqual(3, map.EntitiesOnMap.Count);
+            var map = GameMap.ParseFromText("e##\n___\n___", null, null);
+            Assert.AreEqual(2, map.EntitiesOnMap.Count);
         }
 
         [Test]
         public void CheckParseTextWitnPlayer()
         {
-            var map = GameMap.ParseFromText("e##\n_P_\n___");
-            Assert.AreEqual(3, map.EntitiesOnMap.Count);
+            var map = GameMap.ParseFromText("e##\n_P_\n___", null, null);
+            Assert.AreEqual(2, map.EntitiesOnMap.Count);
         }
 
         [Test]
         public void CreateEntities()
         {
-            var map = GameMap.ParseFromText("e##\n_P_\n___");
+            var map = GameMap.ParseFromText("e##\n_P_\n___", null, null);
             Assert.IsNotNull(map.EntitiesOnMap);
         }
 
         [Test]
         public void CreateHints()
         {
-            var map = GameMap.ParseFromText("e##\n_P_\n_h_");
+            var map = GameMap.ParseFromText("e##\n_P_\n_h_", new List<string> { ""}, null);
             Assert.IsNotNull(map.HintOnLevels);
         }
 
